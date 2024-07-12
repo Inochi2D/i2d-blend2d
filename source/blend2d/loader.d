@@ -6,6 +6,7 @@ import blend2d.blend2d;
 version(B2D_Static) {
 
 } else {
+nothrow @nogc:
 
     enum Blend2DSupport {
         noLibrary,
@@ -62,7 +63,7 @@ version(B2D_Static) {
         int loaded;
 
         pragma(inline, true)
-        void dynamicLinkFuncs(alias module_, string prefix)() {
+        void dynamicLinkFuncs(alias module_, string prefix)(ref int loaded) {
             import std.algorithm.searching : startsWith;
 
             static foreach (m; __traits(allMembers, module_)) {
@@ -82,12 +83,12 @@ version(B2D_Static) {
         }
         loadedVersion = Blend2DSupport.badLibrary;
 
-        dynamicLinkFuncs!(blend2d.blend2d.api, "bl");
-        dynamicLinkFuncs!(blend2d.blend2d.image, "bl");
-        dynamicLinkFuncs!(blend2d.blend2d.context, "bl");
-        dynamicLinkFuncs!(blend2d.blend2d.geometry, "bl");
-        dynamicLinkFuncs!(blend2d.blend2d.font, "bl");
-        dynamicLinkFuncs!(blend2d.blend2d.glyphs, "bl");
+        dynamicLinkFuncs!(blend2d.blend2d.api, "bl")(loaded);
+        dynamicLinkFuncs!(blend2d.blend2d.image, "bl")(loaded);
+        dynamicLinkFuncs!(blend2d.blend2d.context, "bl")(loaded);
+        dynamicLinkFuncs!(blend2d.blend2d.geometry, "bl")(loaded);
+        dynamicLinkFuncs!(blend2d.blend2d.font, "bl")(loaded);
+        dynamicLinkFuncs!(blend2d.blend2d.glyphs, "bl")(loaded);
 
         loaded -= errorCount();
         if (loaded <= 0)
