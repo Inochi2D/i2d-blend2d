@@ -1,0 +1,21 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/i2d-blend2d
+i2d-blend2d.so
+i2d-blend2d.dylib
+i2d-blend2d.dll
+i2d-blend2d.a
+i2d-blend2d.lib
+i2d-blend2d-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
+
+out/
+copyFiles "libs/win64/*" platform="windows-x64"
+copyFiles "libs/win32/*" platform="windows-x86"
+copyFiles "libs/osx/*" platform="osx"

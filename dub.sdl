@@ -1,0 +1,10 @@
+name "i2d-blend2d"
+description "Blend2D binding to D"
+authors "Inochi2D Project"
+copyright "Copyright © 2024, Inochi2D Project"
+license "BSD 2-clause"
+
+dependency "bindbc-loader" version="~>1.1.5"
+dependency "inmath" version="~>1.2.1"
+
+targetPath "out/"
