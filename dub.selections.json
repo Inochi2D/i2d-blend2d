@@ -1,8 +1,0 @@
-{
-	"fileVersion": 1,
-	"versions": {
-		"bindbc-loader": "1.1.5",
-		"inmath": "1.2.1",
-		"silly": "1.1.1"
-	}
-}
