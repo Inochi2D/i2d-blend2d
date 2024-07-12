@@ -12,3 +12,14 @@ targetPath "out/"
 copyFiles "libs/win64/*" platform="windows-x64"
 copyFiles "libs/win32/*" platform="windows-x86"
 copyFiles "libs/osx/*" platform="osx"
+
+// Dynamically link to Blend2D
+configuration "dynamic" {
+    versions "B2D_Dynamic"
+}
+
+// Statically link to Blend2D
+configuration "static" {
+    libs "blend2d"
+    versions "B2D_Static"
+}
