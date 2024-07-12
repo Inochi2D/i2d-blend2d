@@ -3,41 +3,41 @@ import blend2d.blend2d.api;
 import blend2d.blend2d.array;
 public import inmath;
 
-//! Transformation matrix operation type.
+/// Transformation matrix operation type.
 enum BLTransformOp : uint {
 
-    //! Reset matrix to identity (argument ignored, should be nullptr).
+    /// Reset matrix to identity (argument ignored, should be nullptr).
     BL_TRANSFORM_OP_RESET = 0,
-    //! Assign (copy) the other matrix.
+    /// Assign (copy) the other matrix.
     BL_TRANSFORM_OP_ASSIGN = 1,
 
-    //! Translate the matrix by [x, y].
+    /// Translate the matrix by [x, y].
     BL_TRANSFORM_OP_TRANSLATE = 2,
-    //! Scale the matrix by [x, y].
+    /// Scale the matrix by [x, y].
     BL_TRANSFORM_OP_SCALE = 3,
-    //! Skew the matrix by [x, y].
+    /// Skew the matrix by [x, y].
     BL_TRANSFORM_OP_SKEW = 4,
-    //! Rotate the matrix by the given angle about [0, 0].
+    /// Rotate the matrix by the given angle about [0, 0].
     BL_TRANSFORM_OP_ROTATE = 5,
-    //! Rotate the matrix by the given angle about [x, y].
+    /// Rotate the matrix by the given angle about [x, y].
     BL_TRANSFORM_OP_ROTATE_PT = 6,
-    //! Transform this matrix by other `BLMatrix2D`.
+    /// Transform this matrix by other `BLMatrix2D`.
     BL_TRANSFORM_OP_TRANSFORM = 7,
 
-    //! Post-translate the matrix by [x, y].
+    /// Post-translate the matrix by [x, y].
     BL_TRANSFORM_OP_POST_TRANSLATE = 8,
-    //! Post-scale the matrix by [x, y].
+    /// Post-scale the matrix by [x, y].
     BL_TRANSFORM_OP_POST_SCALE = 9,
-    //! Post-skew the matrix by [x, y].
+    /// Post-skew the matrix by [x, y].
     BL_TRANSFORM_OP_POST_SKEW = 10,
-    //! Post-rotate the matrix about [0, 0].
+    /// Post-rotate the matrix about [0, 0].
     BL_TRANSFORM_OP_POST_ROTATE = 11,
-    //! Post-rotate the matrix about a reference BLPoint.
+    /// Post-rotate the matrix about a reference BLPoint.
     BL_TRANSFORM_OP_POST_ROTATE_PT = 12,
-    //! Post-transform this matrix by other `BLMatrix2D`.
+    /// Post-transform this matrix by other `BLMatrix2D`.
     BL_TRANSFORM_OP_POST_TRANSFORM = 13,
 
-    //! Maximum value of `BLTransformOp`.
+    /// Maximum value of `BLTransformOp`.
     BL_TRANSFORM_OP_MAX_VALUE = 13
 }
 
@@ -132,190 +132,190 @@ enum BLHitTest : uint {
     BL_HIT_TEST_OUT = 2,
 }
 
-//! Path command.
+/// Path command.
 enum BLPathCmd : uint {
 
-    //! Move-to command (starts a new figure).
+    /// Move-to command (starts a new figure).
     BL_PATH_CMD_MOVE = 0,
-    //! On-path command (interpreted as line-to or the end of a curve).
+    /// On-path command (interpreted as line-to or the end of a curve).
     BL_PATH_CMD_ON = 1,
-    //! Quad-to control point.
+    /// Quad-to control point.
     BL_PATH_CMD_QUAD = 2,
-    //! Conic-to control point
+    /// Conic-to control point
     BL_PATH_CMD_CONIC = 3,
-    //! Cubic-to control point (always used as a pair of commands).
+    /// Cubic-to control point (always used as a pair of commands).
     BL_PATH_CMD_CUBIC = 4,
-    //! Close path.
+    /// Close path.
     BL_PATH_CMD_CLOSE = 5,
 
-    //! Conic weight.
-    //!
-    //! \note This is not a point. This is a pair of values from which only the first (x) is used to represent weight
-    //! as used by conic curve. The other value (y) is always set to NaN by Blend2D, but can be arbitrary as it has
-    //! no meaning.
+    /// Conic weight.
+    ///
+    /// \note This is not a point. This is a pair of values from which only the first (x) is used to represent weight
+    /// as used by conic curve. The other value (y) is always set to NaN by Blend2D, but can be arbitrary as it has
+    /// no meaning.
     BL_PATH_CMD_WEIGHT = 6,
 
-    //! Maximum value of `BLPathCmd`.
+    /// Maximum value of `BLPathCmd`.
     BL_PATH_CMD_MAX_VALUE = 6
 }
 
-//! Path command (never stored in path).
+/// Path command (never stored in path).
 enum BLPathCmdExtra : uint {
 
-    //! Used by `BLPath::setVertexAt` to preserve the current command value.
+    /// Used by `BLPath::setVertexAt` to preserve the current command value.
     BL_PATH_CMD_PRESERVE = 0xFFFFFFFFu
 }
 
-//! Path flags.
+/// Path flags.
 enum BLPathFlags : uint {
-    //! No flags.
+    /// No flags.
     BL_PATH_NO_FLAGS = 0u,
-    //! Path is empty (no commands or close commands only).
+    /// Path is empty (no commands or close commands only).
     BL_PATH_FLAG_EMPTY = 0x00000001u,
-    //! Path contains multiple figures.
+    /// Path contains multiple figures.
     BL_PATH_FLAG_MULTIPLE = 0x00000002u,
-    //! Path contains one or more quad curves.
+    /// Path contains one or more quad curves.
     BL_PATH_FLAG_QUADS = 0x00000004u,
-    //! Path contains one or more conic curves.
+    /// Path contains one or more conic curves.
     BL_PATH_FLAG_CONICS = 0x00000008u,
-    //! Path contains one or more cubic curves.
+    /// Path contains one or more cubic curves.
     BL_PATH_FLAG_CUBICS = 0x00000010u,
-    //! Path is invalid.
+    /// Path is invalid.
     BL_PATH_FLAG_INVALID = 0x40000000u,
-    //! Flags are dirty (not reflecting the current status).
+    /// Flags are dirty (not reflecting the current status).
     BL_PATH_FLAG_DIRTY = 0x80000000u
 }
 
-//! Path reversal mode.
+/// Path reversal mode.
 enum BLPathReverseMode : uint {
 
-    //! Reverse each figure and their order as well (default).
+    /// Reverse each figure and their order as well (default).
     BL_PATH_REVERSE_MODE_COMPLETE = 0,
-    //! Reverse each figure separately (keeps their order).
+    /// Reverse each figure separately (keeps their order).
     BL_PATH_REVERSE_MODE_SEPARATE = 1,
 
-    //! Maximum value of `BLPathReverseMode`.
+    /// Maximum value of `BLPathReverseMode`.
     BL_PATH_REVERSE_MODE_MAX_VALUE = 1
 }
 
-//! Stroke join type.
+/// Stroke join type.
 enum BLStrokeJoin : uint {
 
-    //! Miter-join possibly clipped at `miterLimit` [default].
+    /// Miter-join possibly clipped at `miterLimit` [default].
     BL_STROKE_JOIN_MITER_CLIP = 0,
-    //! Miter-join or bevel-join depending on miterLimit condition.
+    /// Miter-join or bevel-join depending on miterLimit condition.
     BL_STROKE_JOIN_MITER_BEVEL = 1,
-    //! Miter-join or round-join depending on miterLimit condition.
+    /// Miter-join or round-join depending on miterLimit condition.
     BL_STROKE_JOIN_MITER_ROUND = 2,
-    //! Bevel-join.
+    /// Bevel-join.
     BL_STROKE_JOIN_BEVEL = 3,
-    //! Round-join.
+    /// Round-join.
     BL_STROKE_JOIN_ROUND = 4,
 
-    //! Maximum value of `BLStrokeJoin`.
+    /// Maximum value of `BLStrokeJoin`.
     BL_STROKE_JOIN_MAX_VALUE = 4
 }
 
 enum BLStrokeCapPosition : uint {
 
-    //! Start of the path.
+    /// Start of the path.
     BL_STROKE_CAP_POSITION_START = 0,
-    //! End of the path.
+    /// End of the path.
     BL_STROKE_CAP_POSITION_END = 1,
 
-    //! Maximum value of `BLStrokeCapPosition`.
+    /// Maximum value of `BLStrokeCapPosition`.
     BL_STROKE_CAP_POSITION_MAX_VALUE = 1
 }
 
-//! A presentation attribute defining the shape to be used at the end of open sub-paths.
+/// A presentation attribute defining the shape to be used at the end of open sub-paths.
 enum BLStrokeCap : uint {
 
-    //! Butt cap [default].
+    /// Butt cap [default].
     BL_STROKE_CAP_BUTT = 0,
-    //! Square cap.
+    /// Square cap.
     BL_STROKE_CAP_SQUARE = 1,
-    //! Round cap.
+    /// Round cap.
     BL_STROKE_CAP_ROUND = 2,
-    //! Round cap reversed.
+    /// Round cap reversed.
     BL_STROKE_CAP_ROUND_REV = 3,
-    //! Triangle cap.
+    /// Triangle cap.
     BL_STROKE_CAP_TRIANGLE = 4,
-    //! Triangle cap reversed.
+    /// Triangle cap reversed.
     BL_STROKE_CAP_TRIANGLE_REV = 5,
 
-    //! Maximum value of `BLStrokeCap`.
+    /// Maximum value of `BLStrokeCap`.
     BL_STROKE_CAP_MAX_VALUE = 5
 }
 
-//! Stroke transform order.
+/// Stroke transform order.
 enum BLStrokeTransformOrder : uint {
 
-    //! Transform after stroke  => `Transform(Stroke(Input))` [default].
+    /// Transform after stroke  => `Transform(Stroke(Input))` [default].
     BL_STROKE_TRANSFORM_ORDER_AFTER = 0,
-    //! Transform before stroke => `Stroke(Transform(Input))`.
+    /// Transform before stroke => `Stroke(Transform(Input))`.
     BL_STROKE_TRANSFORM_ORDER_BEFORE = 1,
 
-    //! Maximum value of `BLStrokeTransformOrder`.
+    /// Maximum value of `BLStrokeTransformOrder`.
     BL_STROKE_TRANSFORM_ORDER_MAX_VALUE = 1
 }
 
-//! Mode that specifies how curves are approximated to line segments.
+/// Mode that specifies how curves are approximated to line segments.
 enum BLFlattenMode : uint {
 
-    //! Use default mode (decided by Blend2D).
+    /// Use default mode (decided by Blend2D).
     BL_FLATTEN_MODE_DEFAULT = 0,
-    //! Recursive subdivision flattening.
+    /// Recursive subdivision flattening.
     BL_FLATTEN_MODE_RECURSIVE = 1,
 
-    //! Maximum value of `BLFlattenMode`.
+    /// Maximum value of `BLFlattenMode`.
     BL_FLATTEN_MODE_MAX_VALUE = 1
 }
 
-//! Mode that specifies how to construct offset curves.
+/// Mode that specifies how to construct offset curves.
 enum BLOffsetMode : uint {
 
-    //! Use default mode (decided by Blend2D).
+    /// Use default mode (decided by Blend2D).
     BL_OFFSET_MODE_DEFAULT = 0,
-    //! Iterative offset construction.
+    /// Iterative offset construction.
     BL_OFFSET_MODE_ITERATIVE = 1,
 
-    //! Maximum value of `BLOffsetMode`.
+    /// Maximum value of `BLOffsetMode`.
     BL_OFFSET_MODE_MAX_VALUE = 1
 }
 
-//! Options used to describe how geometry is approximated.
-//!
-//! This struct cannot be simply zeroed and then passed to functions that accept approximation options.
-//! Use `blDefaultApproximationOptions` to setup defaults and then alter values you want to change.
-//!
-//! Example of using `BLApproximationOptions`:
-//!
-//! ```
-//! // Initialize with defaults first.
-//! BLApproximationOptions approx = blDefaultApproximationOptions;
-//!
-//! // Override values you want to change.
-//! approx.simplifyTolerance = 0.02;
-//!
-//! // ... now safely use approximation options in your code ...
-//! ```
+/// Options used to describe how geometry is approximated.
+///
+/// This struct cannot be simply zeroed and then passed to functions that accept approximation options.
+/// Use `blDefaultApproximationOptions` to setup defaults and then alter values you want to change.
+///
+/// Example of using `BLApproximationOptions`:
+///
+/// ```
+/// // Initialize with defaults first.
+/// BLApproximationOptions approx = blDefaultApproximationOptions;
+///
+/// // Override values you want to change.
+/// approx.simplifyTolerance = 0.02;
+///
+/// // ... now safely use approximation options in your code ...
+/// ```
 struct BLApproximationOptions {
-  //! Specifies how curves are flattened, see `FlattenMode`.
+  /// Specifies how curves are flattened, see `FlattenMode`.
   ubyte flattenMode;
-  //! Specifies how curves are offsetted (used by stroking), see `BLOffsetMode`.
+  /// Specifies how curves are offsetted (used by stroking), see `BLOffsetMode`.
   ubyte offsetMode;
-  //! Reserved for future use, must be zero.
+  /// Reserved for future use, must be zero.
   ubyte[6] reservedFlags;
 
-  //! Tolerance used to flatten curves.
+  /// Tolerance used to flatten curves.
   double flattenTolerance;
-  //! Tolerance used to approximate cubic curves with quadratic curves.
+  /// Tolerance used to approximate cubic curves with quadratic curves.
   double simplifyTolerance;
-  //! Curve offsetting parameter, exact meaning depends on `offsetMode`.
+  /// Curve offsetting parameter, exact meaning depends on `offsetMode`.
   double offsetParameter;
 }
 
-//! 2D vector path view provides pointers to vertex and command data along with their size.
+/// 2D vector path view provides pointers to vertex and command data along with their size.
 struct BLPathView {
     const(ubyte)* commandData;
     const(BLPoint)* vertexData;
@@ -378,21 +378,21 @@ alias BLPoint = Vector!(double, 2);
 alias BLMatrix2D = Matrix!(double, 2, 3);
 
 
-//! Optional callback that can be used to consume a path data.
+/// Optional callback that can be used to consume a path data.
 alias BLPathSinkFunc = extern(C) BLResult function(BLPathCore* path, const void* info, void* userData) nothrow @nogc;
 
-//! This is a sink that is used by path offsetting. This sink consumes both `a` and `b` offsets of the path. The sink
-//! will be called for each figure and is responsible for joining these paths. If the paths are not closed then the
-//! sink must insert start cap, then join `b`, and then insert end cap.
-//!
-//! The sink must also clean up the paths as this is not done by the offsetter. The reason is that in case the `a` path
-//! is the output path you can just keep it and insert `b` path into it (clearing only `b` path after each call).
+/// This is a sink that is used by path offsetting. This sink consumes both `a` and `b` offsets of the path. The sink
+/// will be called for each figure and is responsible for joining these paths. If the paths are not closed then the
+/// sink must insert start cap, then join `b`, and then insert end cap.
+///
+/// The sink must also clean up the paths as this is not done by the offsetter. The reason is that in case the `a` path
+/// is the output path you can just keep it and insert `b` path into it (clearing only `b` path after each call).
 alias BLPathStrokeSinkFunc = extern(C) BLResult function(BLPathCore* a, BLPathCore* b, BLPathCore* c, size_t inputStart, size_t inputEnd, void* userData) nothrow @nogc;
 
-//! 2D vector path [C API].
+/// 2D vector path [C API].
 struct BLPathCore;
 
-//! Stroke options [C API].
+/// Stroke options [C API].
 struct BLStrokeOptionsCore {
 
     union {

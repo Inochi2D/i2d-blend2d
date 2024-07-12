@@ -13,11 +13,11 @@ import blend2d.blend2d.api;
 /// \{
 struct BLArrayCore {
 
-    //! Pointer to array data.
+    /// Pointer to array data.
     void* data;
-    //! Array size [in items].
+    /// Array size [in items].
     size_t size;
-    //! Array capacity [in items].
+    /// Array capacity [in items].
     size_t capacity;
 }
 
