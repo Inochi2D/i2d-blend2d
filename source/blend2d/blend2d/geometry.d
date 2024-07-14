@@ -306,6 +306,7 @@ struct BLApproximationOptions {
 
 /// 2D vector path view provides pointers to vertex and command data along with their size.
 struct BLPathView {
+nothrow @nogc:
     const(ubyte)* commandData;
     const(BLPoint)* vertexData;
     size_t size;

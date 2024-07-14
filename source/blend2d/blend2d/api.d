@@ -560,6 +560,7 @@ enum BLRuntimeCleanupFlags : uint {
 
 /// Blend2D build information.
 struct BLRuntimeBuildInfo {
+nothrow @nogc:
     /// Major version number.
     uint majorVersion;
     /// Minor version number.
@@ -604,6 +605,7 @@ struct BLRuntimeBuildInfo {
 
 /// System information queried by the runtime.
 struct BLRuntimeSystemInfo {
+nothrow @nogc:
     /// Host CPU architecture, see `BLRuntimeCpuArch`.
     uint cpuArch;
     /// Host CPU features, see `BLRuntimeCpuFeatures`.
@@ -631,6 +633,7 @@ struct BLRuntimeSystemInfo {
 
 /// Provides information about resources allocated by Blend2D.
 struct BLRuntimeResourceInfo {
+nothrow @nogc:
     /// Virtual memory used at this time.
     size_t vmUsed;
     /// Virtual memory reserved (allocated internally).

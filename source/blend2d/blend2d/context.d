@@ -364,6 +364,7 @@ nothrow @nogc:
 /// Rendering context [C API].
 struct BLContext {
     mixin BLExtends!BLObject;
+
 private:
     const(void)* vtable;
     const(void)* state;
