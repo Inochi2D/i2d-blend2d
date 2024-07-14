@@ -368,7 +368,7 @@ alias BLMatrix2D = Matrix!(double, 2, 3);
 
 
 /// Optional callback that can be used to consume a path data.
-alias BLPathSinkFunc = extern(C) BLResult function(BLPathCore* path, const void* info, void* userData) nothrow @nogc;
+alias BLPathSinkFunc = extern(C) BLResult function(BLPath* path, const void* info, void* userData) nothrow @nogc;
 
 /// This is a sink that is used by path offsetting. This sink consumes both `a` and `b` offsets of the path. The sink
 /// will be called for each figure and is responsible for joining these paths. If the paths are not closed then the
@@ -376,10 +376,11 @@ alias BLPathSinkFunc = extern(C) BLResult function(BLPathCore* path, const void*
 ///
 /// The sink must also clean up the paths as this is not done by the offsetter. The reason is that in case the `a` path
 /// is the output path you can just keep it and insert `b` path into it (clearing only `b` path after each call).
-alias BLPathStrokeSinkFunc = extern(C) BLResult function(BLPathCore* a, BLPathCore* b, BLPathCore* c, size_t inputStart, size_t inputEnd, void* userData) nothrow @nogc;
+alias BLPathStrokeSinkFunc = extern(C) BLResult function(BLPath* a, BLPath* b, BLPath* c, size_t inputStart, size_t inputEnd, void* userData) nothrow @nogc;
 
 /// 2D vector path [C API].
-struct BLPathCore {
+struct BLPath {
+    mixin BLExtends!BLObject;
     
     //! Union of either raw path-data or their `view`.
     union {
@@ -405,7 +406,9 @@ struct BLPathCore {
 }
 
 /// Stroke options [C API].
-struct BLStrokeOptionsCore {
+struct BLStrokeOptions {
+    mixin BLExtends!BLObject;
+
     union {
         struct {
             ubyte startCap;
@@ -420,78 +423,78 @@ struct BLStrokeOptionsCore {
         double width;
         double miterLimit;
         double dashOffset;
-        BLArrayCore dashArray;
+        BLArray dashArray;
     }
 }
 
 version(B2D_Static) {
 nothrow @nogc extern(C):
 
-    BLResult blPathInit(BLPathCore* self);
-    BLResult blPathInitMove(BLPathCore* self, BLPathCore* other);
-    BLResult blPathInitWeak(BLPathCore* self, const(BLPathCore)* other);
-    BLResult blPathDestroy(BLPathCore* self);
-    BLResult blPathReset(BLPathCore* self);
-    size_t blPathGetSize(const(BLPathCore)* self) pure;
-    size_t blPathGetCapacity(const(BLPathCore)* self) pure;
-    const(ubyte)* blPathGetCommandData(const(BLPathCore)* self) pure;
-    const(BLPoint)* blPathGetVertexData(const(BLPathCore)* self) pure;
-    BLResult blPathClear(BLPathCore* self);
-    BLResult blPathShrink(BLPathCore* self);
-    BLResult blPathReserve(BLPathCore* self, size_t n);
-    BLResult blPathModifyOp(BLPathCore* self, BLModifyOp op, size_t n, ubyte** cmdDataOut, BLPoint** vtxDataOut);
-    BLResult blPathAssignMove(BLPathCore* self, BLPathCore* other);
-    BLResult blPathAssignWeak(BLPathCore* self, const(BLPathCore)* other);
-    BLResult blPathAssignDeep(BLPathCore* self, const(BLPathCore)* other);
-    BLResult blPathSetVertexAt(BLPathCore* self, size_t index, uint cmd, double x, double y);
-    BLResult blPathMoveTo(BLPathCore* self, double x0, double y0);
-    BLResult blPathLineTo(BLPathCore* self, double x1, double y1);
-    BLResult blPathPolyTo(BLPathCore* self, const(BLPoint)* poly, size_t count);
-    BLResult blPathQuadTo(BLPathCore* self, double x1, double y1, double x2, double y2);
-    BLResult blPathConicTo(BLPathCore* self, double x1, double y1, double x2, double y2, double w);
-    BLResult blPathCubicTo(BLPathCore* self, double x1, double y1, double x2, double y2, double x3, double y3);
-    BLResult blPathSmoothQuadTo(BLPathCore* self, double x2, double y2);
-    BLResult blPathSmoothCubicTo(BLPathCore* self, double x2, double y2, double x3, double y3);
-    BLResult blPathArcTo(BLPathCore* self, double x, double y, double rx, double ry, double start, double sweep, bool forceMoveTo);
-    BLResult blPathArcQuadrantTo(BLPathCore* self, double x1, double y1, double x2, double y2);
-    BLResult blPathEllipticArcTo(BLPathCore* self, double rx, double ry, double xAxisRotation, bool largeArcFlag, bool sweepFlag, double x1, double y1);
-    BLResult blPathClose(BLPathCore* self);
-    BLResult blPathAddGeometry(BLPathCore* self, BLGeometryType geometryType, const void* geometryData, const BLMatrix2D* m, BLGeometryDirection dir);
-    BLResult blPathAddBoxI(BLPathCore* self, const(BLBoxI)* box, BLGeometryDirection dir);
-    BLResult blPathAddBoxD(BLPathCore* self, const(BLBox)* box, BLGeometryDirection dir);
-    BLResult blPathAddRectI(BLPathCore* self, const(BLRectI)* rect, BLGeometryDirection dir);
-    BLResult blPathAddRectD(BLPathCore* self, const(BLRect)* rect, BLGeometryDirection dir);
-    BLResult blPathAddPath(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range);
-    BLResult blPathAddTranslatedPath(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range, const(BLPoint)* p);
-    BLResult blPathAddTransformedPath(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range, const BLMatrix2D* m);
-    BLResult blPathAddReversedPath(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range, BLPathReverseMode reverseMode);
-    BLResult blPathAddStrokedPath(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range, const(BLStrokeOptionsCore)* options, const(BLApproximationOptions)* approx);
-    BLResult blPathRemoveRange(BLPathCore* self, const(BLRange)* range);
-    BLResult blPathTranslate(BLPathCore* self, const(BLRange)* range, const(BLPoint)* p);
-    BLResult blPathTransform(BLPathCore* self, const(BLRange)* range, const BLMatrix2D* m);
-    BLResult blPathFitTo(BLPathCore* self, const(BLRange)* range, const(BLRect)* rect, uint fitFlags);
-    bool     blPathEquals(const(BLPathCore)* a, const(BLPathCore)* b);
-    BLResult blPathGetInfoFlags(const(BLPathCore)* self, uint* flagsOut);
-    BLResult blPathGetControlBox(const(BLPathCore)* self, BLBox* boxOut);
-    BLResult blPathGetBoundingBox(const(BLPathCore)* self, BLBox* boxOut);
-    BLResult blPathGetFigureRange(const(BLPathCore)* self, size_t index, BLRange* rangeOut);
-    BLResult blPathGetLastVertex(const(BLPathCore)* self, BLPoint* vtxOut);
-    BLResult blPathGetClosestVertex(const(BLPathCore)* self, const(BLPoint)* p, double maxDistance, size_t* indexOut, double* distanceOut);
-    BLHitTest blPathHitTest(const(BLPathCore)* self, const(BLPoint)* p, BLFillRule fillRule);
+    BLResult blPathInit(BLPath* self);
+    BLResult blPathInitMove(BLPath* self, BLPath* other);
+    BLResult blPathInitWeak(BLPath* self, const(BLPath)* other);
+    BLResult blPathDestroy(BLPath* self);
+    BLResult blPathReset(BLPath* self);
+    size_t blPathGetSize(const(BLPath)* self) pure;
+    size_t blPathGetCapacity(const(BLPath)* self) pure;
+    const(ubyte)* blPathGetCommandData(const(BLPath)* self) pure;
+    const(BLPoint)* blPathGetVertexData(const(BLPath)* self) pure;
+    BLResult blPathClear(BLPath* self);
+    BLResult blPathShrink(BLPath* self);
+    BLResult blPathReserve(BLPath* self, size_t n);
+    BLResult blPathModifyOp(BLPath* self, BLModifyOp op, size_t n, ubyte** cmdDataOut, BLPoint** vtxDataOut);
+    BLResult blPathAssignMove(BLPath* self, BLPath* other);
+    BLResult blPathAssignWeak(BLPath* self, const(BLPath)* other);
+    BLResult blPathAssignDeep(BLPath* self, const(BLPath)* other);
+    BLResult blPathSetVertexAt(BLPath* self, size_t index, uint cmd, double x, double y);
+    BLResult blPathMoveTo(BLPath* self, double x0, double y0);
+    BLResult blPathLineTo(BLPath* self, double x1, double y1);
+    BLResult blPathPolyTo(BLPath* self, const(BLPoint)* poly, size_t count);
+    BLResult blPathQuadTo(BLPath* self, double x1, double y1, double x2, double y2);
+    BLResult blPathConicTo(BLPath* self, double x1, double y1, double x2, double y2, double w);
+    BLResult blPathCubicTo(BLPath* self, double x1, double y1, double x2, double y2, double x3, double y3);
+    BLResult blPathSmoothQuadTo(BLPath* self, double x2, double y2);
+    BLResult blPathSmoothCubicTo(BLPath* self, double x2, double y2, double x3, double y3);
+    BLResult blPathArcTo(BLPath* self, double x, double y, double rx, double ry, double start, double sweep, bool forceMoveTo);
+    BLResult blPathArcQuadrantTo(BLPath* self, double x1, double y1, double x2, double y2);
+    BLResult blPathEllipticArcTo(BLPath* self, double rx, double ry, double xAxisRotation, bool largeArcFlag, bool sweepFlag, double x1, double y1);
+    BLResult blPathClose(BLPath* self);
+    BLResult blPathAddGeometry(BLPath* self, BLGeometryType geometryType, const void* geometryData, const BLMatrix2D* m, BLGeometryDirection dir);
+    BLResult blPathAddBoxI(BLPath* self, const(BLBoxI)* box, BLGeometryDirection dir);
+    BLResult blPathAddBoxD(BLPath* self, const(BLBox)* box, BLGeometryDirection dir);
+    BLResult blPathAddRectI(BLPath* self, const(BLRectI)* rect, BLGeometryDirection dir);
+    BLResult blPathAddRectD(BLPath* self, const(BLRect)* rect, BLGeometryDirection dir);
+    BLResult blPathAddPath(BLPath* self, const(BLPath)* other, const(BLRange)* range);
+    BLResult blPathAddTranslatedPath(BLPath* self, const(BLPath)* other, const(BLRange)* range, const(BLPoint)* p);
+    BLResult blPathAddTransformedPath(BLPath* self, const(BLPath)* other, const(BLRange)* range, const BLMatrix2D* m);
+    BLResult blPathAddReversedPath(BLPath* self, const(BLPath)* other, const(BLRange)* range, BLPathReverseMode reverseMode);
+    BLResult blPathAddStrokedPath(BLPath* self, const(BLPath)* other, const(BLRange)* range, const(BLStrokeOptions)* options, const(BLApproximationOptions)* approx);
+    BLResult blPathRemoveRange(BLPath* self, const(BLRange)* range);
+    BLResult blPathTranslate(BLPath* self, const(BLRange)* range, const(BLPoint)* p);
+    BLResult blPathTransform(BLPath* self, const(BLRange)* range, const BLMatrix2D* m);
+    BLResult blPathFitTo(BLPath* self, const(BLRange)* range, const(BLRect)* rect, uint fitFlags);
+    bool     blPathEquals(const(BLPath)* a, const(BLPath)* b);
+    BLResult blPathGetInfoFlags(const(BLPath)* self, uint* flagsOut);
+    BLResult blPathGetControlBox(const(BLPath)* self, BLBox* boxOut);
+    BLResult blPathGetBoundingBox(const(BLPath)* self, BLBox* boxOut);
+    BLResult blPathGetFigureRange(const(BLPath)* self, size_t index, BLRange* rangeOut);
+    BLResult blPathGetLastVertex(const(BLPath)* self, BLPoint* vtxOut);
+    BLResult blPathGetClosestVertex(const(BLPath)* self, const(BLPoint)* p, double maxDistance, size_t* indexOut, double* distanceOut);
+    BLHitTest blPathHitTest(const(BLPath)* self, const(BLPoint)* p, BLFillRule fillRule);
 
-    BLResult blStrokeOptionsInit(BLStrokeOptionsCore* self);
-    BLResult blStrokeOptionsInitMove(BLStrokeOptionsCore* self, BLStrokeOptionsCore* other);
-    BLResult blStrokeOptionsInitWeak(BLStrokeOptionsCore* self, const(BLStrokeOptionsCore)* other);
-    BLResult blStrokeOptionsDestroy(BLStrokeOptionsCore* self);
-    BLResult blStrokeOptionsReset(BLStrokeOptionsCore* self);
-    bool blStrokeOptionsEquals(const(BLStrokeOptionsCore)* a, const(BLStrokeOptionsCore)* b);
-    BLResult blStrokeOptionsAssignMove(BLStrokeOptionsCore* self, BLStrokeOptionsCore* other);
-    BLResult blStrokeOptionsAssignWeak(BLStrokeOptionsCore* self, const(BLStrokeOptionsCore)* other);
+    BLResult blStrokeOptionsInit(BLStrokeOptions* self);
+    BLResult blStrokeOptionsInitMove(BLStrokeOptions* self, BLStrokeOptions* other);
+    BLResult blStrokeOptionsInitWeak(BLStrokeOptions* self, const(BLStrokeOptions)* other);
+    BLResult blStrokeOptionsDestroy(BLStrokeOptions* self);
+    BLResult blStrokeOptionsReset(BLStrokeOptions* self);
+    bool blStrokeOptionsEquals(const(BLStrokeOptions)* a, const(BLStrokeOptions)* b);
+    BLResult blStrokeOptionsAssignMove(BLStrokeOptions* self, BLStrokeOptions* other);
+    BLResult blStrokeOptionsAssignWeak(BLStrokeOptions* self, const(BLStrokeOptions)* other);
 
     BLResult blPathStrokeToSink(
-        const(BLPathCore)* self,
+        const(BLPath)* self,
         const(BLRange)* range,
-        const(BLStrokeOptionsCore)* strokeOptions,
+        const(BLStrokeOptions)* strokeOptions,
         const(BLApproximationOptions)* approximationOptions,
         BLPathCore *a,
         BLPathCore *b,
@@ -503,74 +506,74 @@ nothrow @nogc extern(C):
 } else {
 nothrow @nogc extern(C):
 
-    BLResult function(BLPathCore* self) blPathInit;
-    BLResult function(BLPathCore* self, BLPathCore* other) blPathInitMove;
-    BLResult function(BLPathCore* self, const(BLPathCore)* other) blPathInitWeak;
-    BLResult function(BLPathCore* self) blPathDestroy;
-    BLResult function(BLPathCore* self) blPathReset;
-    size_t function(const(BLPathCore)* self) pure blPathGetSize;
-    size_t function(const(BLPathCore)* self) pure blPathGetCapacity;
-    const(ubyte)* function(const(BLPathCore)* self) pure blPathGetCommandData;
-    const(BLPoint)* function(const(BLPathCore)* self) pure blPathGetVertexData;
-    BLResult function(BLPathCore* self) blPathClear;
-    BLResult function(BLPathCore* self) blPathShrink;
-    BLResult function(BLPathCore* self, size_t n) blPathReserve;
-    BLResult function(BLPathCore* self, BLModifyOp op, size_t n, ubyte** cmdDataOut, BLPoint** vtxDataOut) blPathModifyOp;
-    BLResult function(BLPathCore* self, BLPathCore* other) blPathAssignMove;
-    BLResult function(BLPathCore* self, const(BLPathCore)* other) blPathAssignWeak;
-    BLResult function(BLPathCore* self, const(BLPathCore)* other) blPathAssignDeep;
-    BLResult function(BLPathCore* self, size_t index, uint cmd, double x, double y) blPathSetVertexAt;
-    BLResult function(BLPathCore* self, double x0, double y0) blPathMoveTo;
-    BLResult function(BLPathCore* self, double x1, double y1) blPathLineTo;
-    BLResult function(BLPathCore* self, const(BLPoint)* poly, size_t count) blPathPolyTo;
-    BLResult function(BLPathCore* self, double x1, double y1, double x2, double y2) blPathQuadTo;
-    BLResult function(BLPathCore* self, double x1, double y1, double x2, double y2, double w) blPathConicTo;
-    BLResult function(BLPathCore* self, double x1, double y1, double x2, double y2, double x3, double y3) blPathCubicTo;
-    BLResult function(BLPathCore* self, double x2, double y2) blPathSmoothQuadTo;
-    BLResult function(BLPathCore* self, double x2, double y2, double x3, double y3) blPathSmoothCubicTo;
-    BLResult function(BLPathCore* self, double x, double y, double rx, double ry, double start, double sweep, bool forceMoveTo) blPathArcTo;
-    BLResult function(BLPathCore* self, double x1, double y1, double x2, double y2) blPathArcQuadrantTo;
-    BLResult function(BLPathCore* self, double rx, double ry, double xAxisRotation, bool largeArcFlag, bool sweepFlag, double x1, double y1) blPathEllipticArcTo;
-    BLResult function(BLPathCore* self) blPathClose;
-    BLResult function(BLPathCore* self, BLGeometryType geometryType, const void* geometryData, const BLMatrix2D* m, BLGeometryDirection dir) blPathAddGeometry;
-    BLResult function(BLPathCore* self, const(BLBoxI)* box, BLGeometryDirection dir) blPathAddBoxI;
-    BLResult function(BLPathCore* self, const(BLBox)* box, BLGeometryDirection dir) blPathAddBoxD;
-    BLResult function(BLPathCore* self, const(BLRectI)* rect, BLGeometryDirection dir) blPathAddRectI;
-    BLResult function(BLPathCore* self, const(BLRect)* rect, BLGeometryDirection dir) blPathAddRectD;
-    BLResult function(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range) blPathAddPath;
-    BLResult function(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range, const(BLPoint)* p) blPathAddTranslatedPath;
-    BLResult function(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range, const BLMatrix2D* m) blPathAddTransformedPath;
-    BLResult function(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range, BLPathReverseMode reverseMode) blPathAddReversedPath;
-    BLResult function(BLPathCore* self, const(BLPathCore)* other, const(BLRange)* range, const(BLStrokeOptionsCore)* options, const(BLApproximationOptions)* approx) blPathAddStrokedPath;
-    BLResult function(BLPathCore* self, const(BLRange)* range) blPathRemoveRange;
-    BLResult function(BLPathCore* self, const(BLRange)* range, const(BLPoint)* p) blPathTranslate;
-    BLResult function(BLPathCore* self, const(BLRange)* range, const BLMatrix2D* m) blPathTransform;
-    BLResult function(BLPathCore* self, const(BLRange)* range, const(BLRect)* rect, uint fitFlags) blPathFitTo;
-    bool     function(const(BLPathCore)* a, const(BLPathCore)* b) blPathEquals;
-    BLResult function(const(BLPathCore)* self, uint* flagsOut) blPathGetInfoFlags;
-    BLResult function(const(BLPathCore)* self, BLBox* boxOut) blPathGetControlBox;
-    BLResult function(const(BLPathCore)* self, BLBox* boxOut) blPathGetBoundingBox;
-    BLResult function(const(BLPathCore)* self, size_t index, BLRange* rangeOut) blPathGetFigureRange;
-    BLResult function(const(BLPathCore)* self, BLPoint* vtxOut) blPathGetLastVertex;
-    BLResult function(const(BLPathCore)* self, const(BLPoint)* p, double maxDistance, size_t* indexOut, double* distanceOut) blPathGetClosestVertex;
-    BLHitTest function(const(BLPathCore)* self, const(BLPoint)* p, BLFillRule fillRule) blPathHitTest;
-    BLResult function(BLStrokeOptionsCore* self) blStrokeOptionsInit;
-    BLResult function(BLStrokeOptionsCore* self, BLStrokeOptionsCore* other) blStrokeOptionsInitMove;
-    BLResult function(BLStrokeOptionsCore* self, const(BLStrokeOptionsCore)* other) blStrokeOptionsInitWeak;
-    BLResult function(BLStrokeOptionsCore* self) blStrokeOptionsDestroy;
-    BLResult function(BLStrokeOptionsCore* self) blStrokeOptionsReset;
-    bool function(const(BLStrokeOptionsCore)* a, const(BLStrokeOptionsCore)* b) blStrokeOptionsEquals;
-    BLResult function(BLStrokeOptionsCore* self, BLStrokeOptionsCore* other) blStrokeOptionsAssignMove;
-    BLResult function(BLStrokeOptionsCore* self, const(BLStrokeOptionsCore)* other) blStrokeOptionsAssignWeak;
+    BLResult function(BLPath* self) blPathInit;
+    BLResult function(BLPath* self, BLPath* other) blPathInitMove;
+    BLResult function(BLPath* self, const(BLPath)* other) blPathInitWeak;
+    BLResult function(BLPath* self) blPathDestroy;
+    BLResult function(BLPath* self) blPathReset;
+    size_t function(const(BLPath)* self) pure blPathGetSize;
+    size_t function(const(BLPath)* self) pure blPathGetCapacity;
+    const(ubyte)* function(const(BLPath)* self) pure blPathGetCommandData;
+    const(BLPoint)* function(const(BLPath)* self) pure blPathGetVertexData;
+    BLResult function(BLPath* self) blPathClear;
+    BLResult function(BLPath* self) blPathShrink;
+    BLResult function(BLPath* self, size_t n) blPathReserve;
+    BLResult function(BLPath* self, BLModifyOp op, size_t n, ubyte** cmdDataOut, BLPoint** vtxDataOut) blPathModifyOp;
+    BLResult function(BLPath* self, BLPath* other) blPathAssignMove;
+    BLResult function(BLPath* self, const(BLPath)* other) blPathAssignWeak;
+    BLResult function(BLPath* self, const(BLPath)* other) blPathAssignDeep;
+    BLResult function(BLPath* self, size_t index, uint cmd, double x, double y) blPathSetVertexAt;
+    BLResult function(BLPath* self, double x0, double y0) blPathMoveTo;
+    BLResult function(BLPath* self, double x1, double y1) blPathLineTo;
+    BLResult function(BLPath* self, const(BLPoint)* poly, size_t count) blPathPolyTo;
+    BLResult function(BLPath* self, double x1, double y1, double x2, double y2) blPathQuadTo;
+    BLResult function(BLPath* self, double x1, double y1, double x2, double y2, double w) blPathConicTo;
+    BLResult function(BLPath* self, double x1, double y1, double x2, double y2, double x3, double y3) blPathCubicTo;
+    BLResult function(BLPath* self, double x2, double y2) blPathSmoothQuadTo;
+    BLResult function(BLPath* self, double x2, double y2, double x3, double y3) blPathSmoothCubicTo;
+    BLResult function(BLPath* self, double x, double y, double rx, double ry, double start, double sweep, bool forceMoveTo) blPathArcTo;
+    BLResult function(BLPath* self, double x1, double y1, double x2, double y2) blPathArcQuadrantTo;
+    BLResult function(BLPath* self, double rx, double ry, double xAxisRotation, bool largeArcFlag, bool sweepFlag, double x1, double y1) blPathEllipticArcTo;
+    BLResult function(BLPath* self) blPathClose;
+    BLResult function(BLPath* self, BLGeometryType geometryType, const void* geometryData, const BLMatrix2D* m, BLGeometryDirection dir) blPathAddGeometry;
+    BLResult function(BLPath* self, const(BLBoxI)* box, BLGeometryDirection dir) blPathAddBoxI;
+    BLResult function(BLPath* self, const(BLBox)* box, BLGeometryDirection dir) blPathAddBoxD;
+    BLResult function(BLPath* self, const(BLRectI)* rect, BLGeometryDirection dir) blPathAddRectI;
+    BLResult function(BLPath* self, const(BLRect)* rect, BLGeometryDirection dir) blPathAddRectD;
+    BLResult function(BLPath* self, const(BLPath)* other, const(BLRange)* range) blPathAddPath;
+    BLResult function(BLPath* self, const(BLPath)* other, const(BLRange)* range, const(BLPoint)* p) blPathAddTranslatedPath;
+    BLResult function(BLPath* self, const(BLPath)* other, const(BLRange)* range, const BLMatrix2D* m) blPathAddTransformedPath;
+    BLResult function(BLPath* self, const(BLPath)* other, const(BLRange)* range, BLPathReverseMode reverseMode) blPathAddReversedPath;
+    BLResult function(BLPath* self, const(BLPath)* other, const(BLRange)* range, const(BLStrokeOptions)* options, const(BLApproximationOptions)* approx) blPathAddStrokedPath;
+    BLResult function(BLPath* self, const(BLRange)* range) blPathRemoveRange;
+    BLResult function(BLPath* self, const(BLRange)* range, const(BLPoint)* p) blPathTranslate;
+    BLResult function(BLPath* self, const(BLRange)* range, const BLMatrix2D* m) blPathTransform;
+    BLResult function(BLPath* self, const(BLRange)* range, const(BLRect)* rect, uint fitFlags) blPathFitTo;
+    bool     function(const(BLPath)* a, const(BLPath)* b) blPathEquals;
+    BLResult function(const(BLPath)* self, uint* flagsOut) blPathGetInfoFlags;
+    BLResult function(const(BLPath)* self, BLBox* boxOut) blPathGetControlBox;
+    BLResult function(const(BLPath)* self, BLBox* boxOut) blPathGetBoundingBox;
+    BLResult function(const(BLPath)* self, size_t index, BLRange* rangeOut) blPathGetFigureRange;
+    BLResult function(const(BLPath)* self, BLPoint* vtxOut) blPathGetLastVertex;
+    BLResult function(const(BLPath)* self, const(BLPoint)* p, double maxDistance, size_t* indexOut, double* distanceOut) blPathGetClosestVertex;
+    BLHitTest function(const(BLPath)* self, const(BLPoint)* p, BLFillRule fillRule) blPathHitTest;
+    BLResult function(BLStrokeOptions* self) blStrokeOptionsInit;
+    BLResult function(BLStrokeOptions* self, BLStrokeOptions* other) blStrokeOptionsInitMove;
+    BLResult function(BLStrokeOptions* self, const(BLStrokeOptions)* other) blStrokeOptionsInitWeak;
+    BLResult function(BLStrokeOptions* self) blStrokeOptionsDestroy;
+    BLResult function(BLStrokeOptions* self) blStrokeOptionsReset;
+    bool function(const(BLStrokeOptions)* a, const(BLStrokeOptions)* b) blStrokeOptionsEquals;
+    BLResult function(BLStrokeOptions* self, BLStrokeOptions* other) blStrokeOptionsAssignMove;
+    BLResult function(BLStrokeOptions* self, const(BLStrokeOptions)* other) blStrokeOptionsAssignWeak;
 
     BLResult function(
-        const(BLPathCore)* self,
+        const(BLPath)* self,
         const(BLRange)* range,
-        const(BLStrokeOptionsCore)* strokeOptions,
+        const(BLStrokeOptions)* strokeOptions,
         const(BLApproximationOptions)* approximationOptions,
-        BLPathCore *a,
-        BLPathCore *b,
-        BLPathCore *c,
+        BLPath* a,
+        BLPath* b,
+        BLPath* c,
         BLPathStrokeSinkFunc sink, 
         void* userData
     ) blPathStrokeToSink;

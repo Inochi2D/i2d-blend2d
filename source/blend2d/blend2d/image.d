@@ -92,7 +92,9 @@ enum BLImageCodecFeatures : uint {
 }
 
 /// Image codec [C API].
-struct BLImageCodecCore;
+struct BLImageCodec {
+    mixin BLExtends!BLObject;
+}
 
 /// Flags used by `BLImageInfo`.
 enum BLImageInfoFlags : uint {
@@ -163,110 +165,117 @@ nothrow @nogc:
 }
 
 /// Image [C API].
-struct BLImageCore {
-  //! Pixel data.
-  void* pixelData;
-  //! Image stride.
-  ptrdiff_t stride;
-  //! Image size.
-  BLSizeI size;
-  //! Image format.
-  ubyte format;
-  //! Image flags.
-  ubyte flags;
-  //! Image depth (in bits).
-  ushort depth;
-  //! Reserved for future use, must be zero.
-  ubyte[4] reserved;
+struct BLImage {
+    mixin BLExtends!BLObject;
+
+    //! Pixel data.
+    void* pixelData;
+    //! Image stride.
+    ptrdiff_t stride;
+    //! Image size.
+    BLSizeI size;
+    //! Image format.
+    ubyte format;
+    //! Image flags.
+    ubyte flags;
+    //! Image depth (in bits).
+    ushort depth;
+    //! Reserved for future use, must be zero.
+    ubyte[4] reserved;
 }
 
-struct BLImageDecoderCore;
-struct BLImageEncoderCore;
+struct BLImageDecoder {
+    mixin BLExtends!BLObject;
+}
+    
+struct BLImageEncoder {
+    mixin BLExtends!BLObject;
+}
 
 version(B2D_Static) {
 nothrow @nogc extern(C):
 
-    BLResult blImageCodecInit(BLImageCodecCore* self);
-    BLResult blImageCodecInitMove(BLImageCodecCore* self, BLImageCodecCore* other);
-    BLResult blImageCodecInitWeak(BLImageCodecCore* self, const(BLImageCodecCore)* other);
-    BLResult blImageCodecInitByName(BLImageCodecCore* self, const(char)* name, size_t size, const BLArrayCore* codecs);
-    BLResult blImageCodecDestroy(BLImageCodecCore* self);
-    BLResult blImageCodecReset(BLImageCodecCore* self);
-    BLResult blImageCodecAssignMove(BLImageCodecCore* self, BLImageCodecCore* other);
-    BLResult blImageCodecAssignWeak(BLImageCodecCore* self, const(BLImageCodecCore)* other);
-    BLResult blImageCodecFindByName(BLImageCodecCore* self, const(char)* name, size_t size, const BLArrayCore* codecs);
-    BLResult blImageCodecFindByExtension(BLImageCodecCore* self, const(char)* name, size_t size, const BLArrayCore* codecs);
-    BLResult blImageCodecFindByData(BLImageCodecCore* self, const(void)* data, size_t size, const BLArrayCore* codecs);
-    uint     blImageCodecInspectData(const(BLImageCodecCore)* self, const(void)* data, size_t size);
-    BLResult blImageCodecCreateDecoder(const(BLImageCodecCore)* self, BLImageDecoderCore* dst);
-    BLResult blImageCodecCreateEncoder(const(BLImageCodecCore)* self, BLImageEncoderCore* dst);
+    BLResult blImageCodecInit(BLImageCodec* self);
+    BLResult blImageCodecInitMove(BLImageCodec* self, BLImageCodec* other);
+    BLResult blImageCodecInitWeak(BLImageCodec* self, const(BLImageCodec)* other);
+    BLResult blImageCodecInitByName(BLImageCodec* self, const(char)* name, size_t size, const BLArray* codecs);
+    BLResult blImageCodecDestroy(BLImageCodec* self);
+    BLResult blImageCodecReset(BLImageCodec* self);
+    BLResult blImageCodecAssignMove(BLImageCodec* self, BLImageCodec* other);
+    BLResult blImageCodecAssignWeak(BLImageCodec* self, const(BLImageCodec)* other);
+    BLResult blImageCodecFindByName(BLImageCodec* self, const(char)* name, size_t size, const BLArray* codecs);
+    BLResult blImageCodecFindByExtension(BLImageCodec* self, const(char)* name, size_t size, const BLArray* codecs);
+    BLResult blImageCodecFindByData(BLImageCodec* self, const(void)* data, size_t size, const BLArray* codecs);
+    uint     blImageCodecInspectData(const(BLImageCodec)* self, const(void)* data, size_t size);
+    BLResult blImageCodecCreateDecoder(const(BLImageCodec)* self, BLImageDecoder* dst);
+    BLResult blImageCodecCreateEncoder(const(BLImageCodec)* self, BLImageEncoder* dst);
 
-    BLResult blImageCodecArrayInitBuiltInCodecs(BLArrayCore* self);
-    BLResult blImageCodecArrayAssignBuiltInCodecs(BLArrayCore* self);
-    BLResult blImageCodecAddToBuiltIn(const(BLImageCodecCore)* codec);
-    BLResult blImageCodecRemoveFromBuiltIn(const(BLImageCodecCore)* codec);
+    BLResult blImageCodecArrayInitBuiltInCodecs(BLArray* self);
+    BLResult blImageCodecArrayAssignBuiltInCodecs(BLArray* self);
+    BLResult blImageCodecAddToBuiltIn(const(BLImageCodec)* codec);
+    BLResult blImageCodecRemoveFromBuiltIn(const(BLImageCodec)* codec);
 
-    BLResult blImageInit(BLImageCore* self);
-    BLResult blImageInitMove(BLImageCore* self, BLImageCore* other);
-    BLResult blImageInitWeak(BLImageCore* self, const(BLImageCore)* other);
-    BLResult blImageInitAs(BLImageCore* self, int w, int h, BLFormat format);
-    BLResult blImageInitAsFromData(BLImageCore* self, int w, int h, BLFormat format, void* pixelData, ptrdiff_t stride, BLDataAccessFlags accessFlags, BLDestroyExternalDataFunc destroyFunc, void* userData);
-    BLResult blImageDestroy(BLImageCore* self);
-    BLResult blImageReset(BLImageCore* self);
-    BLResult blImageAssignMove(BLImageCore* self, BLImageCore* other);
-    BLResult blImageAssignWeak(BLImageCore* self, const(BLImageCore)* other);
-    BLResult blImageAssignDeep(BLImageCore* self, const(BLImageCore)* other);
-    BLResult blImageCreate(BLImageCore* self, int w, int h, BLFormat format);
-    BLResult blImageCreateFromData(BLImageCore* self, int w, int h, BLFormat format, void* pixelData, ptrdiff_t stride, BLDataAccessFlags accessFlags, BLDestroyExternalDataFunc destroyFunc, void* userData);
-    BLResult blImageGetData(const(BLImageCore)* self, BLImageData* dataOut);
-    BLResult blImageMakeMutable(BLImageCore* self, BLImageData* dataOut);
-    BLResult blImageConvert(BLImageCore* self, BLFormat format);
-    bool     blImageEquals(const(BLImageCore)* a, const(BLImageCore)* b);
-    BLResult blImageScale(BLImageCore* dst, const(BLImageCore)* src, const(BLSizeI)* size, BLImageScaleFilter filter);
-    BLResult blImageReadFromFile(BLImageCore* self, const(char)* fileName, const(BLArrayCore)* codecs);
-    BLResult blImageReadFromData(BLImageCore* self, const(void)* data, size_t size, const(BLArrayCore)* codecs);
-    BLResult blImageWriteToFile(const(BLImageCore)* self, const(char)* fileName, const(BLImageCodecCore)* codec);
-    BLResult blImageWriteToData(const(BLImageCore)* self, BLArrayCore* dst, const(BLImageCodecCore)* codec);
+    BLResult blImageInit(BLImage* self);
+    BLResult blImageInitMove(BLImage* self, BLImage* other);
+    BLResult blImageInitWeak(BLImage* self, const(BLImage)* other);
+    BLResult blImageInitAs(BLImage* self, int w, int h, BLFormat format);
+    BLResult blImageInitAsFromData(BLImage* self, int w, int h, BLFormat format, void* pixelData, ptrdiff_t stride, BLDataAccessFlags accessFlags, BLDestroyExternalDataFunc destroyFunc, void* userData);
+    BLResult blImageDestroy(BLImage* self);
+    BLResult blImageReset(BLImage* self);
+    BLResult blImageAssignMove(BLImage* self, BLImage* other);
+    BLResult blImageAssignWeak(BLImage* self, const(BLImage)* other);
+    BLResult blImageAssignDeep(BLImage* self, const(BLImage)* other);
+    BLResult blImageCreate(BLImage* self, int w, int h, BLFormat format);
+    BLResult blImageCreateFromData(BLImage* self, int w, int h, BLFormat format, void* pixelData, ptrdiff_t stride, BLDataAccessFlags accessFlags, BLDestroyExternalDataFunc destroyFunc, void* userData);
+    BLResult blImageGetData(const(BLImage)* self, BLImageData* dataOut);
+    BLResult blImageMakeMutable(BLImage* self, BLImageData* dataOut);
+    BLResult blImageConvert(BLImage* self, BLFormat format);
+    bool     blImageEquals(const(BLImage)* a, const(BLImage)* b);
+    BLResult blImageScale(BLImage* dst, const(BLImage)* src, const(BLSizeI)* size, BLImageScaleFilter filter);
+    BLResult blImageReadFromFile(BLImage* self, const(char)* fileName, const(BLArray)* codecs);
+    BLResult blImageReadFromData(BLImage* self, const(void)* data, size_t size, const(BLArray)* codecs);
+    BLResult blImageWriteToFile(const(BLImage)* self, const(char)* fileName, const(BLImageCodec)* codec);
+    BLResult blImageWriteToData(const(BLImage)* self, BLArray* dst, const(BLImageCodec)* codec);
 } else {
 nothrow @nogc extern(C):
 
-    BLResult function(BLImageCodecCore* self) blImageCodecInit;
-    BLResult function(BLImageCodecCore* self, BLImageCodecCore* other) blImageCodecInitMove;
-    BLResult function(BLImageCodecCore* self, const(BLImageCodecCore)* other) blImageCodecInitWeak;
-    BLResult function(BLImageCodecCore* self, const(char)* name, size_t size, const BLArrayCore* codecs) blImageCodecInitByName;
-    BLResult function(BLImageCodecCore* self) blImageCodecDestroy;
-    BLResult function(BLImageCodecCore* self) blImageCodecReset;
-    BLResult function(BLImageCodecCore* self, BLImageCodecCore* other) blImageCodecAssignMove;
-    BLResult function(BLImageCodecCore* self, const(BLImageCodecCore)* other) blImageCodecAssignWeak;
-    BLResult function(BLImageCodecCore* self, const(char)* name, size_t size, const BLArrayCore* codecs) blImageCodecFindByName;
-    BLResult function(BLImageCodecCore* self, const(char)* name, size_t size, const BLArrayCore* codecs) blImageCodecFindByExtension;
-    BLResult function(BLImageCodecCore* self, const(void)* data, size_t size, const BLArrayCore* codecs) blImageCodecFindByData;
-    uint     function(const(BLImageCodecCore)* self, const(void)* data, size_t size) blImageCodecInspectData;
-    BLResult function(const(BLImageCodecCore)* self, BLImageDecoderCore* dst) blImageCodecCreateDecoder;
-    BLResult function(const(BLImageCodecCore)* self, BLImageEncoderCore* dst) blImageCodecCreateEncoder;
-    BLResult function(BLArrayCore* self) blImageCodecArrayInitBuiltInCodecs;
-    BLResult function(BLArrayCore* self) blImageCodecArrayAssignBuiltInCodecs;
-    BLResult function(const(BLImageCodecCore)* codec) blImageCodecAddToBuiltIn;
-    BLResult function(const(BLImageCodecCore)* codec) blImageCodecRemoveFromBuiltIn;
-    BLResult function(BLImageCore* self) blImageInit;
-    BLResult function(BLImageCore* self, BLImageCore* other) blImageInitMove;
-    BLResult function(BLImageCore* self, const(BLImageCore)* other) blImageInitWeak;
-    BLResult function(BLImageCore* self, int w, int h, BLFormat format) blImageInitAs;
-    BLResult function(BLImageCore* self, int w, int h, BLFormat format, void* pixelData, ptrdiff_t stride, BLDataAccessFlags accessFlags, BLDestroyExternalDataFunc destroyFunc, void* userData) blImageInitAsFromData;
-    BLResult function(BLImageCore* self) blImageDestroy;
-    BLResult function(BLImageCore* self) blImageReset;
-    BLResult function(BLImageCore* self, BLImageCore* other) blImageAssignMove;
-    BLResult function(BLImageCore* self, const(BLImageCore)* other) blImageAssignWeak;
-    BLResult function(BLImageCore* self, const(BLImageCore)* other) blImageAssignDeep;
-    BLResult function(BLImageCore* self, int w, int h, BLFormat format) blImageCreate;
-    BLResult function(BLImageCore* self, int w, int h, BLFormat format, void* pixelData, ptrdiff_t stride, BLDataAccessFlags accessFlags, BLDestroyExternalDataFunc destroyFunc, void* userData) blImageCreateFromData;
-    BLResult function(const(BLImageCore)* self, BLImageData* dataOut) blImageGetData;
-    BLResult function(BLImageCore* self, BLImageData* dataOut) blImageMakeMutable;
-    BLResult function(BLImageCore* self, BLFormat format) blImageConvert;
-    bool     function(const(BLImageCore)* a, const(BLImageCore)* b) blImageEquals;
-    BLResult function(BLImageCore* dst, const(BLImageCore)* src, const(BLSizeI)* size, BLImageScaleFilter filter) blImageScale;
-    BLResult function(BLImageCore* self, const(char)* fileName, const(BLArrayCore)* codecs) blImageReadFromFile;
-    BLResult function(BLImageCore* self, const(void)* data, size_t size, const(BLArrayCore)* codecs) blImageReadFromData;
-    BLResult function(const(BLImageCore)* self, const(char)* fileName, const(BLImageCodecCore)* codec) blImageWriteToFile;
-    BLResult function(const(BLImageCore)* self, BLArrayCore* dst, const(BLImageCodecCore)* codec) blImageWriteToData;
+    BLResult function(BLImageCodec* self) blImageCodecInit;
+    BLResult function(BLImageCodec* self, BLImageCodec* other) blImageCodecInitMove;
+    BLResult function(BLImageCodec* self, const(BLImageCodec)* other) blImageCodecInitWeak;
+    BLResult function(BLImageCodec* self, const(char)* name, size_t size, const BLArray* codecs) blImageCodecInitByName;
+    BLResult function(BLImageCodec* self) blImageCodecDestroy;
+    BLResult function(BLImageCodec* self) blImageCodecReset;
+    BLResult function(BLImageCodec* self, BLImageCodec* other) blImageCodecAssignMove;
+    BLResult function(BLImageCodec* self, const(BLImageCodec)* other) blImageCodecAssignWeak;
+    BLResult function(BLImageCodec* self, const(char)* name, size_t size, const BLArray* codecs) blImageCodecFindByName;
+    BLResult function(BLImageCodec* self, const(char)* name, size_t size, const BLArray* codecs) blImageCodecFindByExtension;
+    BLResult function(BLImageCodec* self, const(void)* data, size_t size, const BLArray* codecs) blImageCodecFindByData;
+    uint     function(const(BLImageCodec)* self, const(void)* data, size_t size) blImageCodecInspectData;
+    BLResult function(const(BLImageCodec)* self, BLImageDecoder* dst) blImageCodecCreateDecoder;
+    BLResult function(const(BLImageCodec)* self, BLImageEncoder* dst) blImageCodecCreateEncoder;
+    BLResult function(BLArray* self) blImageCodecArrayInitBuiltInCodecs;
+    BLResult function(BLArray* self) blImageCodecArrayAssignBuiltInCodecs;
+    BLResult function(const(BLImageCodec)* codec) blImageCodecAddToBuiltIn;
+    BLResult function(const(BLImageCodec)* codec) blImageCodecRemoveFromBuiltIn;
+    BLResult function(BLImage* self) blImageInit;
+    BLResult function(BLImage* self, BLImage* other) blImageInitMove;
+    BLResult function(BLImage* self, const(BLImage)* other) blImageInitWeak;
+    BLResult function(BLImage* self, int w, int h, BLFormat format) blImageInitAs;
+    BLResult function(BLImage* self, int w, int h, BLFormat format, void* pixelData, ptrdiff_t stride, BLDataAccessFlags accessFlags, BLDestroyExternalDataFunc destroyFunc, void* userData) blImageInitAsFromData;
+    BLResult function(BLImage* self) blImageDestroy;
+    BLResult function(BLImage* self) blImageReset;
+    BLResult function(BLImage* self, BLImage* other) blImageAssignMove;
+    BLResult function(BLImage* self, const(BLImage)* other) blImageAssignWeak;
+    BLResult function(BLImage* self, const(BLImage)* other) blImageAssignDeep;
+    BLResult function(BLImage* self, int w, int h, BLFormat format) blImageCreate;
+    BLResult function(BLImage* self, int w, int h, BLFormat format, void* pixelData, ptrdiff_t stride, BLDataAccessFlags accessFlags, BLDestroyExternalDataFunc destroyFunc, void* userData) blImageCreateFromData;
+    BLResult function(const(BLImage)* self, BLImageData* dataOut) blImageGetData;
+    BLResult function(BLImage* self, BLImageData* dataOut) blImageMakeMutable;
+    BLResult function(BLImage* self, BLFormat format) blImageConvert;
+    bool     function(const(BLImage)* a, const(BLImage)* b) blImageEquals;
+    BLResult function(BLImage* dst, const(BLImage)* src, const(BLSizeI)* size, BLImageScaleFilter filter) blImageScale;
+    BLResult function(BLImage* self, const(char)* fileName, const(BLArray)* codecs) blImageReadFromFile;
+    BLResult function(BLImage* self, const(void)* data, size_t size, const(BLArray)* codecs) blImageReadFromData;
+    BLResult function(const(BLImage)* self, const(char)* fileName, const(BLImageCodec)* codec) blImageWriteToFile;
+    BLResult function(const(BLImage)* self, BLArray* dst, const(BLImageCodec)* codec) blImageWriteToData;
 }

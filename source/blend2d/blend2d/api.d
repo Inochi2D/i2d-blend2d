@@ -438,10 +438,14 @@ alias BLUniqueId = ulong;
 alias BLUnknown = void;
 
 /// Byte string [C API].
-struct BLStringCore;
+struct BLString {
+    mixin BLExtends!BLObject;
+}
 
 /// Variant [C API].
-struct BLVarCore;
+struct BLVar {
+    mixin BLExtends!BLObject;
+}
 
 
 /// 32-bit RGBA color (8-bit per component) stored as `0xAARRGGBB`.
@@ -655,43 +659,70 @@ struct BLRuntimeResourceInfo {
     void reset() nothrow { this = typeof(this).init; }
 }
 
+//! Defines a BLObject layout that all objects must use.
+union BLObjectDetail {
+    void* impl;
+    char[16] char_data;
+    ubyte[16] u8_data;
+    ushort[8] u16_data;
+    uint[4] u32_data;
+    ulong[2] u64_data;
+    float[4] f32_data;
+    double[2] f64_data;
+    struct {
+        uint[2] u32_data_overlap;
+        uint impl_payload;
+        uint info; // 32 bits describing object type and its additional payload.
+    }
+}
+
+//! Base class used by all Blend2D objects.
+struct BLObject {
+    BLObjectDetail _d;
+}
+
+//! D equivalent of BL_CLASS_INHERITS
+mixin template BLExtends(BASE) {
+    BASE _base;
+}
+
 version(B2D_Static) {
 nothrow @nogc extern(C):
 
-    BLResult blStringInit(BLStringCore* self);
-    BLResult blStringInitMove(BLStringCore* self, BLStringCore* other);
-    BLResult blStringInitWeak(BLStringCore* self, const(BLStringCore)* other);
-    BLResult blStringInitWithData(BLStringCore* self, const(char)* str, size_t size);
-    BLResult blStringDestroy(BLStringCore* self);
-    BLResult blStringReset(BLStringCore* self);
-    const(char)* blStringGetData(const(BLStringCore)* self) pure;
-    size_t blStringGetSize(const(BLStringCore)* self) pure;
-    size_t blStringGetCapacity(const(BLStringCore)* self) pure;
-    BLResult blStringClear(BLStringCore* self);
-    BLResult blStringShrink(BLStringCore* self);
-    BLResult blStringReserve(BLStringCore* self, size_t n);
-    BLResult blStringResize(BLStringCore* self, size_t n, char fill);
-    BLResult blStringMakeMutable(BLStringCore* self, char** dataOut);
-    BLResult blStringModifyOp(BLStringCore* self, BLModifyOp op, size_t n, char** dataOut);
-    BLResult blStringInsertOp(BLStringCore* self, size_t index, size_t n, char** dataOut);
-    BLResult blStringAssignMove(BLStringCore* self, BLStringCore* other);
-    BLResult blStringAssignWeak(BLStringCore* self, const(BLStringCore)* other);
-    BLResult blStringAssignDeep(BLStringCore* self, const(BLStringCore)* other);
-    BLResult blStringAssignData(BLStringCore* self, const(char)* str, size_t n);
-    BLResult blStringApplyOpChar(BLStringCore* self, BLModifyOp op, char c, size_t n);
-    BLResult blStringApplyOpData(BLStringCore* self, BLModifyOp op, const(char)* str, size_t n);
-    BLResult blStringApplyOpString(BLStringCore* self, BLModifyOp op, const(BLStringCore)* other);
-    BLResult blStringApplyOpFormat(BLStringCore* self, BLModifyOp op, const(char)* fmt, ...);
-    BLResult blStringApplyOpFormatV(BLStringCore* self, BLModifyOp op, const(char)* fmt, va_list ap);
-    BLResult blStringInsertChar(BLStringCore* self, size_t index, char c, size_t n);
-    BLResult blStringInsertData(BLStringCore* self, size_t index, const(char)* str, size_t n);
-    BLResult blStringInsertString(BLStringCore* self, size_t index, const(BLStringCore)* other);
-    BLResult blStringRemoveIndex(BLStringCore* self, size_t index);
-    BLResult blStringRemoveRange(BLStringCore* self, size_t rStart, size_t rEnd);
-    bool blStringEquals(const(BLStringCore)* a, const(BLStringCore)* b) pure;
-    bool blStringEqualsData(const(BLStringCore)* self, const(char)* str, size_t n) pure;
-    int blStringCompare(const(BLStringCore)* a, const(BLStringCore)* b) pure;
-    int blStringCompareData(const(BLStringCore)* self, const(char)* str, size_t n) pure;
+    BLResult blStringInit(BLString* self);
+    BLResult blStringInitMove(BLString* self, BLString* other);
+    BLResult blStringInitWeak(BLString* self, const(BLString)* other);
+    BLResult blStringInitWithData(BLString* self, const(char)* str, size_t size);
+    BLResult blStringDestroy(BLString* self);
+    BLResult blStringReset(BLString* self);
+    const(char)* blStringGetData(const(BLString)* self) pure;
+    size_t blStringGetSize(const(BLString)* self) pure;
+    size_t blStringGetCapacity(const(BLString)* self) pure;
+    BLResult blStringClear(BLString* self);
+    BLResult blStringShrink(BLString* self);
+    BLResult blStringReserve(BLString* self, size_t n);
+    BLResult blStringResize(BLString* self, size_t n, char fill);
+    BLResult blStringMakeMutable(BLString* self, char** dataOut);
+    BLResult blStringModifyOp(BLString* self, BLModifyOp op, size_t n, char** dataOut);
+    BLResult blStringInsertOp(BLString* self, size_t index, size_t n, char** dataOut);
+    BLResult blStringAssignMove(BLString* self, BLString* other);
+    BLResult blStringAssignWeak(BLString* self, const(BLString)* other);
+    BLResult blStringAssignDeep(BLString* self, const(BLString)* other);
+    BLResult blStringAssignData(BLString* self, const(char)* str, size_t n);
+    BLResult blStringApplyOpChar(BLString* self, BLModifyOp op, char c, size_t n);
+    BLResult blStringApplyOpData(BLString* self, BLModifyOp op, const(char)* str, size_t n);
+    BLResult blStringApplyOpString(BLString* self, BLModifyOp op, const(BLString)* other);
+    BLResult blStringApplyOpFormat(BLString* self, BLModifyOp op, const(char)* fmt, ...);
+    BLResult blStringApplyOpFormatV(BLString* self, BLModifyOp op, const(char)* fmt, va_list ap);
+    BLResult blStringInsertChar(BLString* self, size_t index, char c, size_t n);
+    BLResult blStringInsertData(BLString* self, size_t index, const(char)* str, size_t n);
+    BLResult blStringInsertString(BLString* self, size_t index, const(BLString)* other);
+    BLResult blStringRemoveIndex(BLString* self, size_t index);
+    BLResult blStringRemoveRange(BLString* self, size_t rStart, size_t rEnd);
+    bool blStringEquals(const(BLString)* a, const(BLString)* b) pure;
+    bool blStringEqualsData(const(BLString)* self, const(char)* str, size_t n) pure;
+    int blStringCompare(const(BLString)* a, const(BLString)* b) pure;
+    int blStringCompareData(const(BLString)* self, const(char)* str, size_t n) pure;
 
     BLResult blVarInitType(BLUnknown* self, BLObjectType type);
     BLResult blVarInitNull(BLUnknown* self);
@@ -758,40 +789,40 @@ nothrow @nogc extern(C):
 } else {
 nothrow @nogc extern(C):
 
-    BLResult function(BLStringCore* self) blStringInit;
-    BLResult function(BLStringCore* self, BLStringCore* other) blStringInitMove;
-    BLResult function(BLStringCore* self, const(BLStringCore)* other) blStringInitWeak;
-    BLResult function(BLStringCore* self, const(char)* str, size_t size) blStringInitWithData;
-    BLResult function(BLStringCore* self) blStringDestroy;
-    BLResult function(BLStringCore* self) blStringReset;
-    const(char)* function(const(BLStringCore)* self) pure blStringGetData;
-    size_t function(const(BLStringCore)* self) pure blStringGetSize;
-    size_t function(const(BLStringCore)* self) pure blStringGetCapacity;
-    BLResult function(BLStringCore* self) blStringClear;
-    BLResult function(BLStringCore* self) blStringShrink;
-    BLResult function(BLStringCore* self, size_t n) blStringReserve;
-    BLResult function(BLStringCore* self, size_t n, char fill) blStringResize;
-    BLResult function(BLStringCore* self, char** dataOut) blStringMakeMutable;
-    BLResult function(BLStringCore* self, BLModifyOp op, size_t n, char** dataOut) blStringModifyOp;
-    BLResult function(BLStringCore* self, size_t index, size_t n, char** dataOut) blStringInsertOp;
-    BLResult function(BLStringCore* self, BLStringCore* other) blStringAssignMove;
-    BLResult function(BLStringCore* self, const(BLStringCore)* other) blStringAssignWeak;
-    BLResult function(BLStringCore* self, const(BLStringCore)* other) blStringAssignDeep;
-    BLResult function(BLStringCore* self, const(char)* str, size_t n) blStringAssignData;
-    BLResult function(BLStringCore* self, BLModifyOp op, char c, size_t n) blStringApplyOpChar;
-    BLResult function(BLStringCore* self, BLModifyOp op, const(char)* str, size_t n) blStringApplyOpData;
-    BLResult function(BLStringCore* self, BLModifyOp op, const(BLStringCore)* other) blStringApplyOpString;
-    BLResult function(BLStringCore* self, BLModifyOp op, const(char)* fmt, ...) blStringApplyOpFormat;
-    BLResult function(BLStringCore* self, BLModifyOp op, const(char)* fmt, va_list ap) blStringApplyOpFormatV;
-    BLResult function(BLStringCore* self, size_t index, char c, size_t n) blStringInsertChar;
-    BLResult function(BLStringCore* self, size_t index, const(char)* str, size_t n) blStringInsertData;
-    BLResult function(BLStringCore* self, size_t index, const(BLStringCore)* other) blStringInsertString;
-    BLResult function(BLStringCore* self, size_t index) blStringRemoveIndex;
-    BLResult function(BLStringCore* self, size_t rStart, size_t rEnd) blStringRemoveRange;
-    bool function(const(BLStringCore)* a, const(BLStringCore)* b) pure blStringEquals;
-    bool function(const(BLStringCore)* self, const(char)* str, size_t n) pure blStringEqualsData;
-    int function(const(BLStringCore)* a, const(BLStringCore)* b) pure blStringCompare;
-    int function(const(BLStringCore)* self, const(char)* str, size_t n) pure blStringCompareData;
+    BLResult function(BLString* self) blStringInit;
+    BLResult function(BLString* self, BLString* other) blStringInitMove;
+    BLResult function(BLString* self, const(BLString)* other) blStringInitWeak;
+    BLResult function(BLString* self, const(char)* str, size_t size) blStringInitWithData;
+    BLResult function(BLString* self) blStringDestroy;
+    BLResult function(BLString* self) blStringReset;
+    const(char)* function(const(BLString)* self) pure blStringGetData;
+    size_t function(const(BLString)* self) pure blStringGetSize;
+    size_t function(const(BLString)* self) pure blStringGetCapacity;
+    BLResult function(BLString* self) blStringClear;
+    BLResult function(BLString* self) blStringShrink;
+    BLResult function(BLString* self, size_t n) blStringReserve;
+    BLResult function(BLString* self, size_t n, char fill) blStringResize;
+    BLResult function(BLString* self, char** dataOut) blStringMakeMutable;
+    BLResult function(BLString* self, BLModifyOp op, size_t n, char** dataOut) blStringModifyOp;
+    BLResult function(BLString* self, size_t index, size_t n, char** dataOut) blStringInsertOp;
+    BLResult function(BLString* self, BLString* other) blStringAssignMove;
+    BLResult function(BLString* self, const(BLString)* other) blStringAssignWeak;
+    BLResult function(BLString* self, const(BLString)* other) blStringAssignDeep;
+    BLResult function(BLString* self, const(char)* str, size_t n) blStringAssignData;
+    BLResult function(BLString* self, BLModifyOp op, char c, size_t n) blStringApplyOpChar;
+    BLResult function(BLString* self, BLModifyOp op, const(char)* str, size_t n) blStringApplyOpData;
+    BLResult function(BLString* self, BLModifyOp op, const(BLString)* other) blStringApplyOpString;
+    BLResult function(BLString* self, BLModifyOp op, const(char)* fmt, ...) blStringApplyOpFormat;
+    BLResult function(BLString* self, BLModifyOp op, const(char)* fmt, va_list ap) blStringApplyOpFormatV;
+    BLResult function(BLString* self, size_t index, char c, size_t n) blStringInsertChar;
+    BLResult function(BLString* self, size_t index, const(char)* str, size_t n) blStringInsertData;
+    BLResult function(BLString* self, size_t index, const(BLString)* other) blStringInsertString;
+    BLResult function(BLString* self, size_t index) blStringRemoveIndex;
+    BLResult function(BLString* self, size_t rStart, size_t rEnd) blStringRemoveRange;
+    bool function(const(BLString)* a, const(BLString)* b) pure blStringEquals;
+    bool function(const(BLString)* self, const(char)* str, size_t n) pure blStringEqualsData;
+    int function(const(BLString)* a, const(BLString)* b) pure blStringCompare;
+    int function(const(BLString)* self, const(char)* str, size_t n) pure blStringCompareData;
     BLResult function(BLUnknown* self, BLObjectType type) blVarInitType;
     BLResult function(BLUnknown* self) blVarInitNull;
     BLResult function(BLUnknown* self, bool value) blVarInitBool;

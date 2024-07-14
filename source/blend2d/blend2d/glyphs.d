@@ -108,40 +108,42 @@ struct BLGlyphRun {
 
 }
 
-struct BLGlyphBufferCore;
+struct BLGlyphBuffer {
+    mixin BLExtends!BLObject;
+}
 
 version(B2D_Static) {
 nothrow @nogc extern(C):
 
-    BLResult blGlyphBufferInit(BLGlyphBufferCore* self);
-    BLResult blGlyphBufferInitMove(BLGlyphBufferCore* self, BLGlyphBufferCore* other);
-    BLResult blGlyphBufferDestroy(BLGlyphBufferCore* self);
-    BLResult blGlyphBufferReset(BLGlyphBufferCore* self);
-    BLResult blGlyphBufferClear(BLGlyphBufferCore* self);
-    size_t blGlyphBufferGetSize(const(BLGlyphBufferCore)* self) pure;
-    uint blGlyphBufferGetFlags(const(BLGlyphBufferCore)* self) pure;
-    const(BLGlyphRun)* blGlyphBufferGetGlyphRun(const(BLGlyphBufferCore)* self) pure;
-    const(uint)* blGlyphBufferGetContent(const(BLGlyphBufferCore)* self) pure;
-    const(BLGlyphInfo)* blGlyphBufferGetInfoData(const(BLGlyphBufferCore)* self) pure;
-    const(BLGlyphPlacement)* blGlyphBufferGetPlacementData(const(BLGlyphBufferCore)* self) pure;
-    BLResult blGlyphBufferSetText(BLGlyphBufferCore* self, const(void)* textData, size_t size, BLTextEncoding encoding);
-    BLResult blGlyphBufferSetGlyphs(BLGlyphBufferCore* self, const(uint)* glyphData, size_t size);
-    BLResult blGlyphBufferSetGlyphsFromStruct(BLGlyphBufferCore* self, const(void)* glyphData, size_t size, size_t glyphIdSize, ptrdiff_t glyphIdAdvance);
+    BLResult blGlyphBufferInit(BLGlyphBuffer* self);
+    BLResult blGlyphBufferInitMove(BLGlyphBuffer* self, BLGlyphBuffer* other);
+    BLResult blGlyphBufferDestroy(BLGlyphBuffer* self);
+    BLResult blGlyphBufferReset(BLGlyphBuffer* self);
+    BLResult blGlyphBufferClear(BLGlyphBuffer* self);
+    size_t blGlyphBufferGetSize(const(BLGlyphBuffer)* self) pure;
+    uint blGlyphBufferGetFlags(const(BLGlyphBuffer)* self) pure;
+    const(BLGlyphRun)* blGlyphBufferGetGlyphRun(const(BLGlyphBuffer)* self) pure;
+    const(uint)* blGlyphBufferGetContent(const(BLGlyphBuffer)* self) pure;
+    const(BLGlyphInfo)* blGlyphBufferGetInfoData(const(BLGlyphBuffer)* self) pure;
+    const(BLGlyphPlacement)* blGlyphBufferGetPlacementData(const(BLGlyphBuffer)* self) pure;
+    BLResult blGlyphBufferSetText(BLGlyphBuffer* self, const(void)* textData, size_t size, BLTextEncoding encoding);
+    BLResult blGlyphBufferSetGlyphs(BLGlyphBuffer* self, const(uint)* glyphData, size_t size);
+    BLResult blGlyphBufferSetGlyphsFromStruct(BLGlyphBuffer* self, const(void)* glyphData, size_t size, size_t glyphIdSize, ptrdiff_t glyphIdAdvance);
 } else {
 nothrow @nogc extern(C):
 
-    BLResult function(BLGlyphBufferCore* self) blGlyphBufferInit;
-    BLResult function(BLGlyphBufferCore* self, BLGlyphBufferCore* other) blGlyphBufferInitMove;
-    BLResult function(BLGlyphBufferCore* self) blGlyphBufferDestroy;
-    BLResult function(BLGlyphBufferCore* self) blGlyphBufferReset;
-    BLResult function(BLGlyphBufferCore* self) blGlyphBufferClear;
-    size_t function(const(BLGlyphBufferCore)* self) pure blGlyphBufferGetSize;
-    uint function(const(BLGlyphBufferCore)* self) pure blGlyphBufferGetFlags;
-    const(BLGlyphRun)* function(const(BLGlyphBufferCore)* self) pure blGlyphBufferGetGlyphRun;
-    const(uint)* function(const(BLGlyphBufferCore)* self) pure blGlyphBufferGetContent;
-    const(BLGlyphInfo)* function(const(BLGlyphBufferCore)* self) pure blGlyphBufferGetInfoData;
-    const(BLGlyphPlacement)* function(const(BLGlyphBufferCore)* self) pure blGlyphBufferGetPlacementData;
-    BLResult function(BLGlyphBufferCore* self, const(void)* textData, size_t size, BLTextEncoding encoding) blGlyphBufferSetText;
-    BLResult function(BLGlyphBufferCore* self, const(uint)* glyphData, size_t size) blGlyphBufferSetGlyphs;
-    BLResult function(BLGlyphBufferCore* self, const(void)* glyphData, size_t size, size_t glyphIdSize, ptrdiff_t glyphIdAdvance) blGlyphBufferSetGlyphsFromStruct;
+    BLResult function(BLGlyphBuffer* self) blGlyphBufferInit;
+    BLResult function(BLGlyphBuffer* self, BLGlyphBuffer* other) blGlyphBufferInitMove;
+    BLResult function(BLGlyphBuffer* self) blGlyphBufferDestroy;
+    BLResult function(BLGlyphBuffer* self) blGlyphBufferReset;
+    BLResult function(BLGlyphBuffer* self) blGlyphBufferClear;
+    size_t function(const(BLGlyphBuffer)* self) pure blGlyphBufferGetSize;
+    uint function(const(BLGlyphBuffer)* self) pure blGlyphBufferGetFlags;
+    const(BLGlyphRun)* function(const(BLGlyphBuffer)* self) pure blGlyphBufferGetGlyphRun;
+    const(uint)* function(const(BLGlyphBuffer)* self) pure blGlyphBufferGetContent;
+    const(BLGlyphInfo)* function(const(BLGlyphBuffer)* self) pure blGlyphBufferGetInfoData;
+    const(BLGlyphPlacement)* function(const(BLGlyphBuffer)* self) pure blGlyphBufferGetPlacementData;
+    BLResult function(BLGlyphBuffer* self, const(void)* textData, size_t size, BLTextEncoding encoding) blGlyphBufferSetText;
+    BLResult function(BLGlyphBuffer* self, const(uint)* glyphData, size_t size) blGlyphBufferSetGlyphs;
+    BLResult function(BLGlyphBuffer* self, const(void)* glyphData, size_t size, size_t glyphIdSize, ptrdiff_t glyphIdAdvance) blGlyphBufferSetGlyphsFromStruct;
 }

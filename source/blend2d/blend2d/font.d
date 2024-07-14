@@ -793,179 +793,190 @@ struct BLFontQueryProperties {
 }
 
 /// Font [C API].
-struct BLFontCore;
+struct BLFont {
+    mixin BLExtends!BLObject;
+}
 
 /// Font Data [C API].
-struct BLFontDataCore;
+struct BLFontData {
+    mixin BLExtends!BLObject;
+}
 
 /// Font face [C API].
-struct BLFontFaceCore;
+struct BLFontFace {
+    mixin BLExtends!BLObject;
+}
 
 /// Font manager [C API].
-struct BLFontManagerCore;
+struct BLFontManager {
+    mixin BLExtends!BLObject;
+}
 
 /// Font feature settings [C API].
-struct BLFontFeatureSettingsCore;
+struct BLFontFeatureSettings {
+    mixin BLExtends!BLObject;
+}
 
 /// Font variation settings [C API].
-struct BLFontVariationSettingsCore;
+struct BLFontVariationSettings {
+    mixin BLExtends!BLObject;
+}
 
 
 version(B2D_Static) {
 nothrow @nogc extern(C):
 
-    BLResult blFontInit(BLFontCore* self);
-    BLResult blFontInitMove(BLFontCore* self, BLFontCore* other);
-    BLResult blFontInitWeak(BLFontCore* self, const BLFontCore* other);
-    BLResult blFontDestroy(BLFontCore* self);
-    BLResult blFontReset(BLFontCore* self);
-    BLResult blFontAssignMove(BLFontCore* self, BLFontCore* other);
-    BLResult blFontAssignWeak(BLFontCore* self, const BLFontCore* other);
-    bool blFontEquals(const BLFontCore* a, const BLFontCore* b);
-    BLResult blFontCreateFromFace(BLFontCore* self, const(BLFontFaceCore)* face, float size);
-    BLResult blFontCreateFromFaceWithSettings(BLFontCore* self, const(BLFontFaceCore)* face, float size, const BLFontFeatureSettingsCore* featureSettings, const BLFontVariationSettingsCore* variationSettings);
-    BLResult blFontGetFace(const BLFontCore* self, BLFontFaceCore* out__);
-    float blFontGetSize(const BLFontCore* self);
-    BLResult blFontSetSize(BLFontCore* self, float size);
-    BLResult blFontGetMetrics(const BLFontCore* self, BLFontMetrics* out__);
-    BLResult blFontGetMatrix(const BLFontCore* self, BLFontMatrix* out__);
-    BLResult blFontGetDesignMetrics(const BLFontCore* self, BLFontDesignMetrics* out__);
-    BLResult blFontGetFeatureSettings(const BLFontCore* self, BLFontFeatureSettingsCore* out__);
-    BLResult blFontSetFeatureSettings(BLFontCore* self, const BLFontFeatureSettingsCore* featureSettings);
-    BLResult blFontResetFeatureSettings(BLFontCore* self);
-    BLResult blFontGetVariationSettings(const BLFontCore* self, BLFontVariationSettingsCore* out__);
-    BLResult blFontSetVariationSettings(BLFontCore* self, const BLFontVariationSettingsCore* variationSettings);
-    BLResult blFontResetVariationSettings(BLFontCore* self);
-    BLResult blFontShape(const BLFontCore* self, BLGlyphBufferCore* gb);
-    BLResult blFontMapTextToGlyphs(const BLFontCore* self, BLGlyphBufferCore* gb, BLGlyphMappingState* stateOut);
-    BLResult blFontPositionGlyphs(const BLFontCore* self, BLGlyphBufferCore* gb);
-    BLResult blFontApplyKerning(const BLFontCore* self, BLGlyphBufferCore* gb);
-    BLResult blFontApplyGSub(const BLFontCore* self, BLGlyphBufferCore* gb, const BLBitArrayCore* lookups);
-    BLResult blFontApplyGPos(const BLFontCore* self, BLGlyphBufferCore* gb, const BLBitArrayCore* lookups);
-    BLResult blFontGetTextMetrics(const BLFontCore* self, BLGlyphBufferCore* gb, BLTextMetrics* out__);
-    BLResult blFontGetGlyphBounds(const BLFontCore* self, const uint* glyphData, ptrdiff_t glyphAdvance, BLBoxI* out__, size_t count);
-    BLResult blFontGetGlyphAdvances(const BLFontCore* self, const uint* glyphData, ptrdiff_t glyphAdvance, BLGlyphPlacement* out__, size_t count);
-    BLResult blFontGetGlyphOutlines(const BLFontCore* self, BLGlyphId glyphId, const BLMatrix2D* userTransform, BLPathCore* out__, BLPathSinkFunc sink, void* userData);
-    BLResult blFontGetGlyphRunOutlines(const BLFontCore* self, const BLGlyphRun* glyphRun, const BLMatrix2D* userTransform, BLPathCore* out__, BLPathSinkFunc sink, void* userData);
+    BLResult blFontInit(BLFont* self);
+    BLResult blFontInitMove(BLFont* self, BLFont* other);
+    BLResult blFontInitWeak(BLFont* self, const BLFont* other);
+    BLResult blFontDestroy(BLFont* self);
+    BLResult blFontReset(BLFont* self);
+    BLResult blFontAssignMove(BLFont* self, BLFont* other);
+    BLResult blFontAssignWeak(BLFont* self, const BLFont* other);
+    bool blFontEquals(const BLFont* a, const BLFont* b);
+    BLResult blFontCreateFromFace(BLFont* self, const(BLFontFace)* face, float size);
+    BLResult blFontCreateFromFaceWithSettings(BLFont* self, const(BLFontFace)* face, float size, const BLFontFeatureSettings* featureSettings, const BLFontVariationSettings* variationSettings);
+    BLResult blFontGetFace(const BLFont* self, BLFontFace* out__);
+    float blFontGetSize(const BLFont* self);
+    BLResult blFontSetSize(BLFont* self, float size);
+    BLResult blFontGetMetrics(const BLFont* self, BLFontMetrics* out__);
+    BLResult blFontGetMatrix(const BLFont* self, BLFontMatrix* out__);
+    BLResult blFontGetDesignMetrics(const BLFont* self, BLFontDesignMetrics* out__);
+    BLResult blFontGetFeatureSettings(const BLFont* self, BLFontFeatureSettings* out__);
+    BLResult blFontSetFeatureSettings(BLFont* self, const BLFontFeatureSettings* featureSettings);
+    BLResult blFontResetFeatureSettings(BLFont* self);
+    BLResult blFontGetVariationSettings(const BLFont* self, BLFontVariationSettings* out__);
+    BLResult blFontSetVariationSettings(BLFont* self, const BLFontVariationSettings* variationSettings);
+    BLResult blFontResetVariationSettings(BLFont* self);
+    BLResult blFontShape(const BLFont* self, BLGlyphBuffer* gb);
+    BLResult blFontMapTextToGlyphs(const BLFont* self, BLGlyphBuffer* gb, BLGlyphMappingState* stateOut);
+    BLResult blFontPositionGlyphs(const BLFont* self, BLGlyphBuffer* gb);
+    BLResult blFontApplyKerning(const BLFont* self, BLGlyphBuffer* gb);
+    BLResult blFontApplyGSub(const BLFont* self, BLGlyphBuffer* gb, const BLBitArray* lookups);
+    BLResult blFontApplyGPos(const BLFont* self, BLGlyphBuffer* gb, const BLBitArray* lookups);
+    BLResult blFontGetTextMetrics(const BLFont* self, BLGlyphBuffer* gb, BLTextMetrics* out__);
+    BLResult blFontGetGlyphBounds(const BLFont* self, const uint* glyphData, ptrdiff_t glyphAdvance, BLBoxI* out__, size_t count);
+    BLResult blFontGetGlyphAdvances(const BLFont* self, const uint* glyphData, ptrdiff_t glyphAdvance, BLGlyphPlacement* out__, size_t count);
+    BLResult blFontGetGlyphOutlines(const BLFont* self, BLGlyphId glyphId, const BLMatrix2D* userTransform, BLPath* out__, BLPathSinkFunc sink, void* userData);
+    BLResult blFontGetGlyphRunOutlines(const BLFont* self, const BLGlyphRun* glyphRun, const BLMatrix2D* userTransform, BLPath* out__, BLPathSinkFunc sink, void* userData);
 
-    BLResult blFontFaceInit(BLFontFaceCore* self);
-    BLResult blFontFaceInitMove(BLFontFaceCore* self, BLFontFaceCore* other);
-    BLResult blFontFaceInitWeak(BLFontFaceCore* self, const(BLFontFaceCore)* other);
-    BLResult blFontFaceDestroy(BLFontFaceCore* self);
-    BLResult blFontFaceReset(BLFontFaceCore* self);
-    BLResult blFontFaceAssignMove(BLFontFaceCore* self, BLFontFaceCore* other);
-    BLResult blFontFaceAssignWeak(BLFontFaceCore* self, const(BLFontFaceCore)* other);
-    bool blFontFaceEquals(const(BLFontFaceCore)* a, const(BLFontFaceCore)* b);
-    BLResult blFontFaceCreateFromFile(BLFontFaceCore* self, const(char)* fileName, BLFileReadFlags readFlags);
-    BLResult blFontFaceCreateFromData(BLFontFaceCore* self, const BLFontDataCore* fontData, uint faceIndex);
-    BLResult blFontFaceGetFullName(const(BLFontFaceCore)* self, BLStringCore* out_);
-    BLResult blFontFaceGetFamilyName(const(BLFontFaceCore)* self, BLStringCore* out_);
-    BLResult blFontFaceGetSubfamilyName(const(BLFontFaceCore)* self, BLStringCore* out_);
-    BLResult blFontFaceGetPostScriptName(const(BLFontFaceCore)* self, BLStringCore* out_);
-    BLResult blFontFaceGetFaceInfo(const(BLFontFaceCore)* self, BLFontFaceInfo* out_);
-    BLResult blFontFaceGetDesignMetrics(const(BLFontFaceCore)* self, BLFontDesignMetrics* out_);
-    BLResult blFontFaceGetUnicodeCoverage(const(BLFontFaceCore)* self, BLFontUnicodeCoverage* out_);
-    BLResult blFontFaceGetCharacterCoverage(const(BLFontFaceCore)* self, BLBitSetCore* out_);
-    bool blFontFaceHasScriptTag(const(BLFontFaceCore)* self, BLTag scriptTag);
-    bool blFontFaceHasFeatureTag(const(BLFontFaceCore)* self, BLTag featureTag);
-    bool blFontFaceHasVariationTag(const(BLFontFaceCore)* self, BLTag variationTag);
-    BLResult blFontFaceGetScriptTags(const(BLFontFaceCore)* self, BLArrayCore* out_);
-    BLResult blFontFaceGetFeatureTags(const(BLFontFaceCore)* self, BLArrayCore* out_);
-    BLResult blFontFaceGetVariationTags(const(BLFontFaceCore)* self, BLArrayCore* out_);
+    BLResult blFontFaceInit(BLFontFace* self);
+    BLResult blFontFaceInitMove(BLFontFace* self, BLFontFace* other);
+    BLResult blFontFaceInitWeak(BLFontFace* self, const(BLFontFace)* other);
+    BLResult blFontFaceDestroy(BLFontFace* self);
+    BLResult blFontFaceReset(BLFontFace* self);
+    BLResult blFontFaceAssignMove(BLFontFace* self, BLFontFace* other);
+    BLResult blFontFaceAssignWeak(BLFontFace* self, const(BLFontFace)* other);
+    bool blFontFaceEquals(const(BLFontFace)* a, const(BLFontFace)* b);
+    BLResult blFontFaceCreateFromFile(BLFontFace* self, const(char)* fileName, BLFileReadFlags readFlags);
+    BLResult blFontFaceCreateFromData(BLFontFace* self, const BLFontData* fontData, uint faceIndex);
+    BLResult blFontFaceGetFullName(const(BLFontFace)* self, BLString* out_);
+    BLResult blFontFaceGetFamilyName(const(BLFontFace)* self, BLString* out_);
+    BLResult blFontFaceGetSubfamilyName(const(BLFontFace)* self, BLString* out_);
+    BLResult blFontFaceGetPostScriptName(const(BLFontFace)* self, BLString* out_);
+    BLResult blFontFaceGetFaceInfo(const(BLFontFace)* self, BLFontFaceInfo* out_);
+    BLResult blFontFaceGetDesignMetrics(const(BLFontFace)* self, BLFontDesignMetrics* out_);
+    BLResult blFontFaceGetUnicodeCoverage(const(BLFontFace)* self, BLFontUnicodeCoverage* out_);
+    BLResult blFontFaceGetCharacterCoverage(const(BLFontFace)* self, BLBitSet* out_);
+    bool blFontFaceHasScriptTag(const(BLFontFace)* self, BLTag scriptTag);
+    bool blFontFaceHasFeatureTag(const(BLFontFace)* self, BLTag featureTag);
+    bool blFontFaceHasVariationTag(const(BLFontFace)* self, BLTag variationTag);
+    BLResult blFontFaceGetScriptTags(const(BLFontFace)* self, BLArray* out_);
+    BLResult blFontFaceGetFeatureTags(const(BLFontFace)* self, BLArray* out_);
+    BLResult blFontFaceGetVariationTags(const(BLFontFace)* self, BLArray* out_);
 
-    BLResult  blFontManagerInit(BLFontManagerCore* self);
-    BLResult  blFontManagerInitMove(BLFontManagerCore* self, BLFontManagerCore* other);
-    BLResult  blFontManagerInitWeak(BLFontManagerCore* self, const(BLFontManagerCore)* other);
-    BLResult  blFontManagerInitNew(BLFontManagerCore* self);
-    BLResult  blFontManagerDestroy(BLFontManagerCore* self);
-    BLResult  blFontManagerReset(BLFontManagerCore* self);
-    BLResult  blFontManagerAssignMove(BLFontManagerCore* self, BLFontManagerCore* other);
-    BLResult  blFontManagerAssignWeak(BLFontManagerCore* self, const(BLFontManagerCore)* other);
-    BLResult  blFontManagerCreate(BLFontManagerCore* self);
-    size_t  blFontManagerGetFaceCount(const(BLFontManagerCore)* self);
-    size_t  blFontManagerGetFamilyCount(const(BLFontManagerCore)* self);
-    bool  blFontManagerHasFace(const(BLFontManagerCore)* self, const(BLFontFaceCore)* face);
-    BLResult  blFontManagerAddFace(BLFontManagerCore* self, const(BLFontFaceCore)* face);
-    BLResult  blFontManagerQueryFace(const(BLFontManagerCore)* self, const(char)* name, size_t nameSize, const(BLFontQueryProperties)* properties, BLFontFaceCore* out_);
-    BLResult  blFontManagerQueryFacesByFamilyName(const(BLFontManagerCore)* self, const(char)* name, size_t nameSize, BLArrayCore* out_);
-    bool  blFontManagerEquals(const(BLFontManagerCore)* a, const(BLFontManagerCore)* b);
+    BLResult  blFontManagerInit(BLFontManager* self);
+    BLResult  blFontManagerInitMove(BLFontManager* self, BLFontManager* other);
+    BLResult  blFontManagerInitWeak(BLFontManager* self, const(BLFontManager)* other);
+    BLResult  blFontManagerInitNew(BLFontManager* self);
+    BLResult  blFontManagerDestroy(BLFontManager* self);
+    BLResult  blFontManagerReset(BLFontManager* self);
+    BLResult  blFontManagerAssignMove(BLFontManager* self, BLFontManager* other);
+    BLResult  blFontManagerAssignWeak(BLFontManager* self, const(BLFontManager)* other);
+    BLResult  blFontManagerCreate(BLFontManager* self);
+    size_t  blFontManagerGetFaceCount(const(BLFontManager)* self);
+    size_t  blFontManagerGetFamilyCount(const(BLFontManager)* self);
+    bool  blFontManagerHasFace(const(BLFontManager)* self, const(BLFontFace)* face);
+    BLResult  blFontManagerAddFace(BLFontManager* self, const(BLFontFace)* face);
+    BLResult  blFontManagerQueryFace(const(BLFontManager)* self, const(char)* name, size_t nameSize, const(BLFontQueryProperties)* properties, BLFontFace* out_);
+    BLResult  blFontManagerQueryFacesByFamilyName(const(BLFontManager)* self, const(char)* name, size_t nameSize, BLArray* out_);
+    bool  blFontManagerEquals(const(BLFontManager)* a, const(BLFontManager)* b);
 
 
 } else {
 nothrow @nogc extern(C):
 
-    BLResult function(BLFontCore* self) blFontInit;
-    BLResult function(BLFontCore* self, BLFontCore* other) blFontInitMove;
-    BLResult function(BLFontCore* self, const BLFontCore* other) blFontInitWeak;
-    BLResult function(BLFontCore* self) blFontDestroy;
-    BLResult function(BLFontCore* self) blFontReset;
-    BLResult function(BLFontCore* self, BLFontCore* other) blFontAssignMove;
-    BLResult function(BLFontCore* self, const BLFontCore* other) blFontAssignWeak;
-    bool function(const BLFontCore* a, const BLFontCore* b) blFontEquals;
-    BLResult function(BLFontCore* self, const(BLFontFaceCore)* face, float size) blFontCreateFromFace;
-    BLResult function(BLFontCore* self, const(BLFontFaceCore)* face, float size, const BLFontFeatureSettingsCore* featureSettings, const BLFontVariationSettingsCore* variationSettings) blFontCreateFromFaceWithSettings;
-    BLResult function(const BLFontCore* self, BLFontFaceCore* out__) blFontGetFace;
-    float function(const BLFontCore* self) blFontGetSize;
-    BLResult function(BLFontCore* self, float size) blFontSetSize;
-    BLResult function(const BLFontCore* self, BLFontMetrics* out__) blFontGetMetrics;
-    BLResult function(const BLFontCore* self, BLFontMatrix* out__) blFontGetMatrix;
-    BLResult function(const BLFontCore* self, BLFontDesignMetrics* out__) blFontGetDesignMetrics;
-    BLResult function(const BLFontCore* self, BLFontFeatureSettingsCore* out__) blFontGetFeatureSettings;
-    BLResult function(BLFontCore* self, const BLFontFeatureSettingsCore* featureSettings) blFontSetFeatureSettings;
-    BLResult function(BLFontCore* self) blFontResetFeatureSettings;
-    BLResult function(const BLFontCore* self, BLFontVariationSettingsCore* out__) blFontGetVariationSettings;
-    BLResult function(BLFontCore* self, const BLFontVariationSettingsCore* variationSettings) blFontSetVariationSettings;
-    BLResult function(BLFontCore* self) blFontResetVariationSettings;
-    BLResult function(const BLFontCore* self, BLGlyphBufferCore* gb) blFontShape;
-    BLResult function(const BLFontCore* self, BLGlyphBufferCore* gb, BLGlyphMappingState* stateOut) blFontMapTextToGlyphs;
-    BLResult function(const BLFontCore* self, BLGlyphBufferCore* gb) blFontPositionGlyphs;
-    BLResult function(const BLFontCore* self, BLGlyphBufferCore* gb) blFontApplyKerning;
-    BLResult function(const BLFontCore* self, BLGlyphBufferCore* gb, const BLBitArrayCore* lookups) blFontApplyGSub;
-    BLResult function(const BLFontCore* self, BLGlyphBufferCore* gb, const BLBitArrayCore* lookups) blFontApplyGPos;
-    BLResult function(const BLFontCore* self, BLGlyphBufferCore* gb, BLTextMetrics* out__) blFontGetTextMetrics;
-    BLResult function(const BLFontCore* self, const uint* glyphData, ptrdiff_t glyphAdvance, BLBoxI* out__, size_t count) blFontGetGlyphBounds;
-    BLResult function(const BLFontCore* self, const uint* glyphData, ptrdiff_t glyphAdvance, BLGlyphPlacement* out__, size_t count) blFontGetGlyphAdvances;
-    BLResult function(const BLFontCore* self, BLGlyphId glyphId, const BLMatrix2D* userTransform, BLPathCore* out__, BLPathSinkFunc sink, void* userData) blFontGetGlyphOutlines;
-    BLResult function(const BLFontCore* self, const BLGlyphRun* glyphRun, const BLMatrix2D* userTransform, BLPathCore* out__, BLPathSinkFunc sink, void* userData) blFontGetGlyphRunOutlines;
-    BLResult function(BLFontFaceCore* self) blFontFaceInit;
-    BLResult function(BLFontFaceCore* self, BLFontFaceCore* other) blFontFaceInitMove;
-    BLResult function(BLFontFaceCore* self, const(BLFontFaceCore)* other) blFontFaceInitWeak;
-    BLResult function(BLFontFaceCore* self) blFontFaceDestroy;
-    BLResult function(BLFontFaceCore* self) blFontFaceReset;
-    BLResult function(BLFontFaceCore* self, BLFontFaceCore* other) blFontFaceAssignMove;
-    BLResult function(BLFontFaceCore* self, const(BLFontFaceCore)* other) blFontFaceAssignWeak;
-    bool function(const(BLFontFaceCore)* a, const(BLFontFaceCore)* b) blFontFaceEquals;
-    BLResult function(BLFontFaceCore* self, const(char)* fileName, BLFileReadFlags readFlags) blFontFaceCreateFromFile;
-    BLResult function(BLFontFaceCore* self, const BLFontDataCore* fontData, uint faceIndex) blFontFaceCreateFromData;
-    BLResult function(const(BLFontFaceCore)* self, BLStringCore* out_) blFontFaceGetFullName;
-    BLResult function(const(BLFontFaceCore)* self, BLStringCore* out_) blFontFaceGetFamilyName;
-    BLResult function(const(BLFontFaceCore)* self, BLStringCore* out_) blFontFaceGetSubfamilyName;
-    BLResult function(const(BLFontFaceCore)* self, BLStringCore* out_) blFontFaceGetPostScriptName;
-    BLResult function(const(BLFontFaceCore)* self, BLFontFaceInfo* out_) blFontFaceGetFaceInfo;
-    BLResult function(const(BLFontFaceCore)* self, BLFontDesignMetrics* out_) blFontFaceGetDesignMetrics;
-    BLResult function(const(BLFontFaceCore)* self, BLFontUnicodeCoverage* out_) blFontFaceGetUnicodeCoverage;
-    BLResult function(const(BLFontFaceCore)* self, BLBitSetCore* out_) blFontFaceGetCharacterCoverage;
-    bool function(const(BLFontFaceCore)* self, BLTag scriptTag) blFontFaceHasScriptTag;
-    bool function(const(BLFontFaceCore)* self, BLTag featureTag) blFontFaceHasFeatureTag;
-    bool function(const(BLFontFaceCore)* self, BLTag variationTag) blFontFaceHasVariationTag;
-    BLResult function(const(BLFontFaceCore)* self, BLArrayCore* out_) blFontFaceGetScriptTags;
-    BLResult function(const(BLFontFaceCore)* self, BLArrayCore* out_) blFontFaceGetFeatureTags;
-    BLResult function(const(BLFontFaceCore)* self, BLArrayCore* out_) blFontFaceGetVariationTags;
-    BLResult  function(BLFontManagerCore* self) blFontManagerInit;
-    BLResult  function(BLFontManagerCore* self, BLFontManagerCore* other) blFontManagerInitMove;
-    BLResult  function(BLFontManagerCore* self, const(BLFontManagerCore)* other) blFontManagerInitWeak;
-    BLResult  function(BLFontManagerCore* self) blFontManagerInitNew;
-    BLResult  function(BLFontManagerCore* self) blFontManagerDestroy;
-    BLResult  function(BLFontManagerCore* self) blFontManagerReset;
-    BLResult  function(BLFontManagerCore* self, BLFontManagerCore* other) blFontManagerAssignMove;
-    BLResult  function(BLFontManagerCore* self, const(BLFontManagerCore)* other) blFontManagerAssignWeak;
-    BLResult  function(BLFontManagerCore* self) blFontManagerCreate;
-    size_t  function(const(BLFontManagerCore)* self) blFontManagerGetFaceCount;
-    size_t  function(const(BLFontManagerCore)* self) blFontManagerGetFamilyCount;
-    bool  function(const(BLFontManagerCore)* self, const(BLFontFaceCore)* face) blFontManagerHasFace;
-    BLResult  function(BLFontManagerCore* self, const(BLFontFaceCore)* face) blFontManagerAddFace;
-    BLResult  function(const(BLFontManagerCore)* self, const(char)* name, size_t nameSize, const(BLFontQueryProperties)* properties, BLFontFaceCore* out_) blFontManagerQueryFace;
-    BLResult  function(const(BLFontManagerCore)* self, const(char)* name, size_t nameSize, BLArrayCore* out_) blFontManagerQueryFacesByFamilyName;
-    bool  function(const(BLFontManagerCore)* a, const(BLFontManagerCore)* b) blFontManagerEquals;
+    BLResult function(BLFont* self) blFontInit;
+    BLResult function(BLFont* self, BLFont* other) blFontInitMove;
+    BLResult function(BLFont* self, const BLFont* other) blFontInitWeak;
+    BLResult function(BLFont* self) blFontDestroy;
+    BLResult function(BLFont* self) blFontReset;
+    BLResult function(BLFont* self, BLFont* other) blFontAssignMove;
+    BLResult function(BLFont* self, const BLFont* other) blFontAssignWeak;
+    bool function(const BLFont* a, const BLFont* b) blFontEquals;
+    BLResult function(BLFont* self, const(BLFontFace)* face, float size) blFontCreateFromFace;
+    BLResult function(BLFont* self, const(BLFontFace)* face, float size, const BLFontFeatureSettings* featureSettings, const BLFontVariationSettings* variationSettings) blFontCreateFromFaceWithSettings;
+    BLResult function(const BLFont* self, BLFontFace* out__) blFontGetFace;
+    float function(const BLFont* self) blFontGetSize;
+    BLResult function(BLFont* self, float size) blFontSetSize;
+    BLResult function(const BLFont* self, BLFontMetrics* out__) blFontGetMetrics;
+    BLResult function(const BLFont* self, BLFontMatrix* out__) blFontGetMatrix;
+    BLResult function(const BLFont* self, BLFontDesignMetrics* out__) blFontGetDesignMetrics;
+    BLResult function(const BLFont* self, BLFontFeatureSettings* out__) blFontGetFeatureSettings;
+    BLResult function(BLFont* self, const BLFontFeatureSettings* featureSettings) blFontSetFeatureSettings;
+    BLResult function(BLFont* self) blFontResetFeatureSettings;
+    BLResult function(const BLFont* self, BLFontVariationSettings* out__) blFontGetVariationSettings;
+    BLResult function(BLFont* self, const BLFontVariationSettings* variationSettings) blFontSetVariationSettings;
+    BLResult function(BLFont* self) blFontResetVariationSettings;
+    BLResult function(const BLFont* self, BLGlyphBuffer* gb) blFontShape;
+    BLResult function(const BLFont* self, BLGlyphBuffer* gb, BLGlyphMappingState* stateOut) blFontMapTextToGlyphs;
+    BLResult function(const BLFont* self, BLGlyphBuffer* gb) blFontPositionGlyphs;
+    BLResult function(const BLFont* self, BLGlyphBuffer* gb) blFontApplyKerning;
+    BLResult function(const BLFont* self, BLGlyphBuffer* gb, const BLBitArray* lookups) blFontApplyGSub;
+    BLResult function(const BLFont* self, BLGlyphBuffer* gb, const BLBitArray* lookups) blFontApplyGPos;
+    BLResult function(const BLFont* self, BLGlyphBuffer* gb, BLTextMetrics* out__) blFontGetTextMetrics;
+    BLResult function(const BLFont* self, const uint* glyphData, ptrdiff_t glyphAdvance, BLBoxI* out__, size_t count) blFontGetGlyphBounds;
+    BLResult function(const BLFont* self, const uint* glyphData, ptrdiff_t glyphAdvance, BLGlyphPlacement* out__, size_t count) blFontGetGlyphAdvances;
+    BLResult function(const BLFont* self, BLGlyphId glyphId, const BLMatrix2D* userTransform, BLPath* out__, BLPathSinkFunc sink, void* userData) blFontGetGlyphOutlines;
+    BLResult function(const BLFont* self, const BLGlyphRun* glyphRun, const BLMatrix2D* userTransform, BLPath* out__, BLPathSinkFunc sink, void* userData) blFontGetGlyphRunOutlines;
+    BLResult function(BLFontFace* self) blFontFaceInit;
+    BLResult function(BLFontFace* self, BLFontFace* other) blFontFaceInitMove;
+    BLResult function(BLFontFace* self, const(BLFontFace)* other) blFontFaceInitWeak;
+    BLResult function(BLFontFace* self) blFontFaceDestroy;
+    BLResult function(BLFontFace* self) blFontFaceReset;
+    BLResult function(BLFontFace* self, BLFontFace* other) blFontFaceAssignMove;
+    BLResult function(BLFontFace* self, const(BLFontFace)* other) blFontFaceAssignWeak;
+    bool function(const(BLFontFace)* a, const(BLFontFace)* b) blFontFaceEquals;
+    BLResult function(BLFontFace* self, const(char)* fileName, BLFileReadFlags readFlags) blFontFaceCreateFromFile;
+    BLResult function(BLFontFace* self, const BLFontData* fontData, uint faceIndex) blFontFaceCreateFromData;
+    BLResult function(const(BLFontFace)* self, BLString* out_) blFontFaceGetFullName;
+    BLResult function(const(BLFontFace)* self, BLString* out_) blFontFaceGetFamilyName;
+    BLResult function(const(BLFontFace)* self, BLString* out_) blFontFaceGetSubfamilyName;
+    BLResult function(const(BLFontFace)* self, BLString* out_) blFontFaceGetPostScriptName;
+    BLResult function(const(BLFontFace)* self, BLFontFaceInfo* out_) blFontFaceGetFaceInfo;
+    BLResult function(const(BLFontFace)* self, BLFontDesignMetrics* out_) blFontFaceGetDesignMetrics;
+    BLResult function(const(BLFontFace)* self, BLFontUnicodeCoverage* out_) blFontFaceGetUnicodeCoverage;
+    bool function(const(BLFontFace)* self, BLTag scriptTag) blFontFaceHasScriptTag;
+    bool function(const(BLFontFace)* self, BLTag featureTag) blFontFaceHasFeatureTag;
+    bool function(const(BLFontFace)* self, BLTag variationTag) blFontFaceHasVariationTag;
+    BLResult function(const(BLFontFace)* self, BLArray* out_) blFontFaceGetScriptTags;
+    BLResult function(const(BLFontFace)* self, BLArray* out_) blFontFaceGetFeatureTags;
+    BLResult function(const(BLFontFace)* self, BLArray* out_) blFontFaceGetVariationTags;
+    BLResult  function(BLFontManager* self) blFontManagerInit;
+    BLResult  function(BLFontManager* self, BLFontManager* other) blFontManagerInitMove;
+    BLResult  function(BLFontManager* self, const(BLFontManager)* other) blFontManagerInitWeak;
+    BLResult  function(BLFontManager* self) blFontManagerInitNew;
+    BLResult  function(BLFontManager* self) blFontManagerDestroy;
+    BLResult  function(BLFontManager* self) blFontManagerReset;
+    BLResult  function(BLFontManager* self, BLFontManager* other) blFontManagerAssignMove;
+    BLResult  function(BLFontManager* self, const(BLFontManager)* other) blFontManagerAssignWeak;
+    BLResult  function(BLFontManager* self) blFontManagerCreate;
+    size_t  function(const(BLFontManager)* self) blFontManagerGetFaceCount;
+    size_t  function(const(BLFontManager)* self) blFontManagerGetFamilyCount;
+    bool  function(const(BLFontManager)* self, const(BLFontFace)* face) blFontManagerHasFace;
+    BLResult  function(BLFontManager* self, const(BLFontFace)* face) blFontManagerAddFace;
+    BLResult  function(const(BLFontManager)* self, const(char)* name, size_t nameSize, const(BLFontQueryProperties)* properties, BLFontFace* out_) blFontManagerQueryFace;
+    BLResult  function(const(BLFontManager)* self, const(char)* name, size_t nameSize, BLArray* out_) blFontManagerQueryFacesByFamilyName;
+    bool  function(const(BLFontManager)* a, const(BLFontManager)* b) blFontManagerEquals;
 
 }
