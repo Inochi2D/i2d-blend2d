@@ -110,6 +110,34 @@ struct BLGlyphRun {
 
 struct BLGlyphBuffer {
     mixin BLExtends!BLObject;
+    BLGlyphBufferData* data;
+}
+
+struct BLGlyphBufferData {
+    union {
+        struct {
+            //! Text (UCS4 code-points) or glyph content.
+            uint* content;
+            //! Glyph placement data.
+            BLGlyphPlacement* placementData;
+            //! Number of either code points or glyph indexes in the glyph-buffer.
+            size_t size;
+            //! Reserved, used exclusively by BLGlyphRun.
+            uint reserved;
+            //! Flags shared between BLGlyphRun and BLGlyphBuffer.
+            uint flags;
+        }
+
+        //! Glyph run data that can be passed directly to the rendering context.
+        //!
+        //! Glyph run shares data with other members like `content`, `placementData`, `size`, and `flags`. When working
+        //! with data it's better to access these members directly as they are typed, whereas `BLGlyphRun` stores pointers
+        //! as `const void*` as it offers more flexibility, which `BLGlyphRun` doesn't need.
+        BLGlyphRun glyphRun;
+    }
+
+    //! Glyph info data - additional information of each code-point or glyph.
+    BLGlyphInfo* infoData;
 }
 
 version(B2D_Static) {

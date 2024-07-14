@@ -90,6 +90,7 @@ nothrow @nogc:
         dynamicLinkFuncs!(blend2d.blend2d.geometry, "bl")(loaded);
         dynamicLinkFuncs!(blend2d.blend2d.font, "bl")(loaded);
         dynamicLinkFuncs!(blend2d.blend2d.glyphs, "bl")(loaded);
+        dynamicLinkFuncs!(blend2d.blend2d.style, "bl")(loaded);
 
         loaded -= errorCount();
         if (loaded <= 0)

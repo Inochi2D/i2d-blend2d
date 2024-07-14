@@ -7,3 +7,4 @@ public import blend2d.blend2d.image;
 public import blend2d.blend2d.glyphs;
 public import blend2d.blend2d.font;
 public import blend2d.blend2d.array;
+public import blend2d.blend2d.style;
