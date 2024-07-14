@@ -29,8 +29,7 @@ enum BLGlyphPlacementType : uint {
     /// Each glyph has a BLPoint offset in absolute units.
     BL_GLYPH_PLACEMENT_TYPE_ABSOLUTE_UNITS = 4,
 
-    /// Maximum value of `BLGlyphPlacementType`.
-    BL_GLYPH_PLACEMENT_TYPE_MAX_VALUE = 4
+
 }
 
 

@@ -37,8 +37,7 @@ enum BLTransformOp : uint {
     /// Post-transform this matrix by other `BLMatrix2D`.
     BL_TRANSFORM_OP_POST_TRANSFORM = 13,
 
-    /// Maximum value of `BLTransformOp`.
-    BL_TRANSFORM_OP_MAX_VALUE = 13
+
 }
 
 /// Direction of a geometry used by geometric primitives and paths.
@@ -105,8 +104,7 @@ enum BLGeometryType : uint {
     /// BLPath (or BLPathCore).
     BL_GEOMETRY_TYPE_PATH = 21,
 
-    /// Maximum value of `BLGeometryType`.
-    BL_GEOMETRY_TYPE_MAX_VALUE = 21,
+
 }
 
 /// Fill rule.
@@ -117,8 +115,7 @@ enum BLFillRule : uint {
     /// Even-odd fill-rule.
     BL_FILL_RULE_EVEN_ODD = 1,
 
-    /// Maximum value of `BLFillRule`.
-    BL_FILL_RULE_MAX_VALUE = 1
+
 }
 
 /// Hit-test result.
@@ -155,8 +152,7 @@ enum BLPathCmd : uint {
     /// no meaning.
     BL_PATH_CMD_WEIGHT = 6,
 
-    /// Maximum value of `BLPathCmd`.
-    BL_PATH_CMD_MAX_VALUE = 6
+
 }
 
 /// Path command (never stored in path).
@@ -194,8 +190,7 @@ enum BLPathReverseMode : uint {
     /// Reverse each figure separately (keeps their order).
     BL_PATH_REVERSE_MODE_SEPARATE = 1,
 
-    /// Maximum value of `BLPathReverseMode`.
-    BL_PATH_REVERSE_MODE_MAX_VALUE = 1
+
 }
 
 /// Stroke join type.
@@ -212,8 +207,7 @@ enum BLStrokeJoin : uint {
     /// Round-join.
     BL_STROKE_JOIN_ROUND = 4,
 
-    /// Maximum value of `BLStrokeJoin`.
-    BL_STROKE_JOIN_MAX_VALUE = 4
+
 }
 
 enum BLStrokeCapPosition : uint {
@@ -223,8 +217,7 @@ enum BLStrokeCapPosition : uint {
     /// End of the path.
     BL_STROKE_CAP_POSITION_END = 1,
 
-    /// Maximum value of `BLStrokeCapPosition`.
-    BL_STROKE_CAP_POSITION_MAX_VALUE = 1
+
 }
 
 /// A presentation attribute defining the shape to be used at the end of open sub-paths.
@@ -243,8 +236,7 @@ enum BLStrokeCap : uint {
     /// Triangle cap reversed.
     BL_STROKE_CAP_TRIANGLE_REV = 5,
 
-    /// Maximum value of `BLStrokeCap`.
-    BL_STROKE_CAP_MAX_VALUE = 5
+
 }
 
 /// Stroke transform order.
@@ -255,8 +247,7 @@ enum BLStrokeTransformOrder : uint {
     /// Transform before stroke => `Stroke(Transform(Input))`.
     BL_STROKE_TRANSFORM_ORDER_BEFORE = 1,
 
-    /// Maximum value of `BLStrokeTransformOrder`.
-    BL_STROKE_TRANSFORM_ORDER_MAX_VALUE = 1
+
 }
 
 /// Mode that specifies how curves are approximated to line segments.
@@ -267,8 +258,7 @@ enum BLFlattenMode : uint {
     /// Recursive subdivision flattening.
     BL_FLATTEN_MODE_RECURSIVE = 1,
 
-    /// Maximum value of `BLFlattenMode`.
-    BL_FLATTEN_MODE_MAX_VALUE = 1
+
 }
 
 /// Mode that specifies how to construct offset curves.
@@ -279,8 +269,7 @@ enum BLOffsetMode : uint {
     /// Iterative offset construction.
     BL_OFFSET_MODE_ITERATIVE = 1,
 
-    /// Maximum value of `BLOffsetMode`.
-    BL_OFFSET_MODE_MAX_VALUE = 1
+
 }
 
 /// Options used to describe how geometry is approximated.
@@ -390,11 +379,33 @@ alias BLPathSinkFunc = extern(C) BLResult function(BLPathCore* path, const void*
 alias BLPathStrokeSinkFunc = extern(C) BLResult function(BLPathCore* a, BLPathCore* b, BLPathCore* c, size_t inputStart, size_t inputEnd, void* userData) nothrow @nogc;
 
 /// 2D vector path [C API].
-struct BLPathCore;
+struct BLPathCore {
+    
+    //! Union of either raw path-data or their `view`.
+    union {
+        struct {
+
+            //! Command data
+            ubyte* commandData;
+            //! Vertex data.
+            BLPoint* vertexData;
+            //! Vertex/command count.
+            size_t size;
+        }
+
+        //! Path data as view.
+        BLPathView view;
+    }
+
+    //! Path vertex/command capacity.
+    size_t capacity;
+
+    //! Path flags related to caching.
+    uint flags;
+}
 
 /// Stroke options [C API].
 struct BLStrokeOptionsCore {
-
     union {
         struct {
             ubyte startCap;
@@ -402,15 +413,15 @@ struct BLStrokeOptionsCore {
             ubyte join;
             ubyte transformOrder;
             ubyte[4] reserved;
-        }
-        ubyte[BLStrokeCapPosition.BL_STROKE_CAP_POSITION_MAX_VALUE + 1] caps;
-        ulong hints;
-    }
 
-    double width;
-    double miterLimit;
-    double dashOffset;
-    BLArrayCore dashArray;
+            ulong hints;
+        }
+
+        double width;
+        double miterLimit;
+        double dashOffset;
+        BLArrayCore dashArray;
+    }
 }
 
 version(B2D_Static) {

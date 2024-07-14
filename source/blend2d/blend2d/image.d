@@ -28,8 +28,7 @@ enum BLFormat : uint {
     /// 8-bit alpha-only pixel format.
     BL_FORMAT_A8 = 3,
 
-    // Maximum value of `BLFormat`.
-    BL_FORMAT_MAX_VALUE = 3
+
 }
 
 /// Pixel format flags.
@@ -119,8 +118,7 @@ enum BLImageScaleFilter : uint {
     /// Lanczos filter (radius 2.0).
     BL_IMAGE_SCALE_FILTER_LANCZOS = 4,
 
-    /// Maximum value of `BLImageScaleFilter`.
-    BL_IMAGE_SCALE_FILTER_MAX_VALUE = 4
+
 }
 
 /// Data that describes a raster image. Used by `BLImage`.
@@ -165,7 +163,22 @@ nothrow @nogc:
 }
 
 /// Image [C API].
-struct BLImageCore;
+struct BLImageCore {
+  //! Pixel data.
+  void* pixelData;
+  //! Image stride.
+  ptrdiff_t stride;
+  //! Image size.
+  BLSizeI size;
+  //! Image format.
+  ubyte format;
+  //! Image flags.
+  ubyte flags;
+  //! Image depth (in bits).
+  ushort depth;
+  //! Reserved for future use, must be zero.
+  ubyte[4] reserved;
+}
 
 struct BLImageDecoderCore;
 struct BLImageEncoderCore;

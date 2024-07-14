@@ -65,12 +65,13 @@ nothrow @nogc:
         pragma(inline, true)
         void dynamicLinkFuncs(alias module_, string prefix)(ref int loaded) {
             import std.algorithm.searching : startsWith;
+            import std.traits : isSomeFunction;
 
             static foreach (m; __traits(allMembers, module_)) {
-                static if (m.startsWith(prefix) && is(__traits(getMember, module_, m) == function)) {
+                static if (m.startsWith(prefix) && isSomeFunction!(__traits(getMember, module_, m))) {
                     lib.bindSymbol(
                         cast(void**)&__traits(getMember, module_, m),
-                        func.stringof
+                        __traits(getMember, module_, m).stringof
                     );
                     loaded++;
                 }
@@ -105,9 +106,10 @@ nothrow @nogc:
         pragma(inline, true)
         void dynamicUnlinkFuncs(alias module_, string prefix)() {
             import std.algorithm.searching : startsWith;
+            import std.traits : isSomeFunction;
 
             static foreach (m; __traits(allMembers, module_)) {
-                static if (m.startsWith(prefix) && is(__traits(getMember, module_, m) == function)) {
+                static if (m.startsWith(prefix) && isSomeFunction!(__traits(getMember, module_, m))) {
                     __traits(getMember, module_, m) = null;
                 }
             }

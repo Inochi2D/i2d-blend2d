@@ -159,8 +159,7 @@ enum BLDataSourceType : uint {
     /// Custom data source.
     BL_DATA_SOURCE_TYPE_CUSTOM = 3,
 
-    /// Maximum value `BLDataSourceType`.
-    BL_DATA_SOURCE_TYPE_MAX_VALUE = 3
+
 }
 
 /// \ingroup blend2d_api_globals
@@ -177,8 +176,7 @@ enum BLModifyOp : uint {
     /// Append operation, which takes into consideration successive appends.
     BL_MODIFY_OP_APPEND_GROW = 3,
 
-    /// Maximum value of `BLModifyOp`.
-    BL_MODIFY_OP_MAX_VALUE = 3
+
 }
 
 /// \ingroup blend2d_api_globals
@@ -199,8 +197,7 @@ enum BLBooleanOp : uint {
     /// Result = ~A & B.
     BL_BOOLEAN_OP_NOT_AND = 5,
 
-    /// Maximum value of `BLBooleanOp`.
-    BL_BOOLEAN_OP_MAX_VALUE = 5
+
 }
 
 /// \ingroup blend2d_api_styling
@@ -236,13 +233,10 @@ enum BLExtendMode : uint {
     /// Reflect X and repeat Y.
     BL_EXTEND_MODE_REFLECT_X_REPEAT_Y = 8,
 
-    /// Count of simple extend modes (that use the same value for X and Y).
-    BL_EXTEND_MODE_SIMPLE_MAX_VALUE = 2,
-    /// Count of complex extend modes (that can use independent values for X and Y).
-    BL_EXTEND_MODE_COMPLEX_MAX_VALUE = 8,
 
-    /// Maximum value of `BLExtendMode`.
-    BL_EXTEND_MODE_MAX_VALUE
+
+
+
 }
 
 /// \ingroup blend2d_api_text
@@ -259,8 +253,7 @@ enum BLTextEncoding : uint {
     /// LATIN1 encoding (one byte per character).
     BL_TEXT_ENCODING_LATIN1 = 3,
 
-    /// Maximum value of `BLTextEncoding`.
-    BL_TEXT_ENCODING_MAX_VALUE = 3
+
 }
 
 /// Object type identifier.
@@ -385,8 +378,7 @@ enum BLObjectType : uint {
   /// Maximum object type of an object with virtual function table.
   BL_OBJECT_TYPE_MAX_VIRTUAL = 127,
 
-  /// Maximum possible value of an object type, including identifiers reserved for the future.
-  BL_OBJECT_TYPE_MAX_VALUE = 127
+
 }
 
 /// File read flags used by `BLFileSystem::readFile()`.
@@ -506,8 +498,7 @@ enum BLRuntimeInfoType : uint {
   /// Resources information (includes Blend2D memory consumption)
   BL_RUNTIME_INFO_TYPE_RESOURCE = 2,
 
-  /// Count of runtime information types.
-  BL_RUNTIME_INFO_TYPE_MAX_VALUE = 2
+
 }
 
 /// Blend2D runtime build type.

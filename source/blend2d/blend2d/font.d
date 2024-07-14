@@ -12,8 +12,7 @@ enum BLOrientation : uint {
     /// Vertical orientation.
     BL_ORIENTATION_VERTICAL = 1,
 
-    /// Maximum value of `BLOrientation`.
-    BL_ORIENTATION_MAX_VALUE = 1
+
 }
 
 /// Type of a font or font face, see \ref BLFontFace (or \ref BLFontFaceCore).
@@ -24,8 +23,7 @@ enum BLFontFaceType : uint {
     /// TrueType/OpenType font type (.ttf/.otf files and font collections).
     BL_FONT_FACE_TYPE_OPENTYPE = 1,
 
-    /// Maximum value of `BLFontFaceType`.
-    BL_FONT_FACE_TYPE_MAX_VALUE = 1
+
 }
 
 /// Font stretch.
@@ -50,8 +48,7 @@ enum BLFontStretch : uint {
     /// Ultra expanded stretch.
     BL_FONT_STRETCH_ULTRA_EXPANDED = 9,
 
-    /// Maximum value of `BLFontStretch`.
-    BL_FONT_STRETCH_MAX_VALUE = 9
+
 }
 
 /// Font style.
@@ -64,8 +61,7 @@ enum BLFontStyle : uint {
     /// Italic.
     BL_FONT_STYLE_ITALIC = 2,
 
-    /// Maximum value of `BLFontStyle`.
-    BL_FONT_STYLE_MAX_VALUE = 2
+
 }
 
 enum BLFontWeight : uint {
@@ -149,8 +145,7 @@ enum BLFontStringId : uint {
     /// Variations PostScript name prefix.
     BL_FONT_STRING_ID_VARIATIONS_POST_SCRIPT_PREFIX = 25,
 
-    /// Count of common font string ids.
-    BL_FONT_STRING_ID_COMMON_MAX_VALUE = 26,
+
     /// Start of custom font string ids.
     BL_FONT_STRING_ID_CUSTOM_START_INDEX = 255
 }
@@ -334,8 +329,7 @@ enum BLFontUnicodeCoverageIndex : uint {
   BL_FONT_UC_INDEX_INTERNAL_USAGE_126,                       ///< Reserved for internal usage (126).
   BL_FONT_UC_INDEX_INTERNAL_USAGE_127,                       ///< Reserved for internal usage (127).
 
-  /// Maximum value of `BLFontUnicodeCoverageIndex`.
-  BL_FONT_UC_INDEX_MAX_VALUE
+
 }
 
 /// Text direction.
@@ -346,8 +340,7 @@ enum BLTextDirection : uint {
   /// Right-to-left direction.
   BL_TEXT_DIRECTION_RTL = 1,
 
-  /// Maximum value of `BLTextDirection`.
-  BL_TEXT_DIRECTION_MAX_VALUE = 1
+
 }
 
 /// Glyph id - a 32-bit unsigned integer.
@@ -751,8 +744,7 @@ enum BLFontOutlineType : uint {
   /// OpenType (CFF2) out_lines with font variations support.
   BL_FONT_OUTLINE_TYPE_CFF2 = 3,
 
-  /// Maximum value of `BLFontOutlineType`.
-  BL_FONT_OUTLINE_TYPE_MAX_VALUE = 3
+
 }
 /// Information of \ref BLFontFace.
 struct BLFontFaceInfo {

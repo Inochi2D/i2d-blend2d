@@ -9,7 +9,7 @@ dependency "inmath" version="~>1.2.1"
 
 targetPath "out/"
 
-copyFiles "libs/win64/*" platform="windows-x64"
+copyFiles "libs/win64/*" platform="windows-x86_64"
 copyFiles "libs/win32/*" platform="windows-x86"
 copyFiles "libs/osx/*" platform="osx"
 

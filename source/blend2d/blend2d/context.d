@@ -17,8 +17,7 @@ enum BLContextType : uint {
     /// Software-accelerated rendering context.
     BL_CONTEXT_TYPE_RASTER = 3,
 
-    /// Maximum value of `BLContextType`.
-    BL_CONTEXT_TYPE_MAX_VALUE = 3
+
 }
 
 /// Rendering context hint.
@@ -31,8 +30,7 @@ enum BLContextHint : uint {
     /// Pattern quality.
     BL_CONTEXT_HINT_PATTERN_QUALITY = 2,
 
-    /// Maximum value of `BLContextHint`.
-    BL_CONTEXT_HINT_MAX_VALUE = 7
+
 }
 
 /// Describes a rendering context style slot - fill or stroke.
@@ -43,8 +41,7 @@ enum BLContextStyleSlot : uint {
     /// Stroke operation style slot.
     BL_CONTEXT_STYLE_SLOT_STROKE = 1,
 
-    /// Maximum value of `BLContextStyleSlot`
-    BL_CONTEXT_STYLE_SLOT_MAX_VALUE = 1
+
 }
 
 /// The type of a text rendering operation.
@@ -159,8 +156,7 @@ enum BLContextStyleSwapMode : uint {
   /// Swap both fill and stroke styles and their alpha values.
   BL_CONTEXT_STYLE_SWAP_MODE_STYLES_WITH_ALPHA = 1,
 
-  /// Maximum value of `BLContextStyleSwapMode`.
-  BL_CONTEXT_STYLE_SWAP_MODE_MAX_VALUE = 1
+
 }
 
 /// Specifies how style transformation matrix is combined with the rendering context transformation matrix, used by
@@ -179,8 +175,7 @@ enum BLContextStyleTransformMode : uint {
   /// Style transformation matrix is considered absolute, and is not combined with a rendering context transform.
   BL_CONTEXT_STYLE_TRANSFORM_MODE_NONE = 2,
 
-  /// Maximum value of `BLContextStyleTransformMode`.
-  BL_CONTEXT_STYLE_TRANSFORM_MODE_MAX_VALUE = 2
+
 }
 
 /// Clip mode.
@@ -259,8 +254,7 @@ enum BLCompOp : uint {
     /// Exclusion.
     BL_COMP_OP_EXCLUSION = 28,
 
-    /// Count of composition & blending operators.
-    BL_COMP_OP_MAX_VALUE = 28
+
 }
 
 /// Rendering quality.
@@ -269,8 +263,7 @@ enum BLRenderingQuality : uint {
   /// Render using anti-aliasing.
   BL_RENDERING_QUALITY_ANTIALIAS = 0,
 
-  /// Maximum value of `BLRenderingQuality`.
-  BL_RENDERING_QUALITY_MAX_VALUE = 0
+
 }
 
 struct BLContextCreateInfo {
@@ -359,7 +352,6 @@ nothrow @nogc:
             ubyte patternQuality;
         }
 
-        ubyte[BLContextHint.BL_CONTEXT_HINT_MAX_VALUE + 1] hints;
     }
 
     /// Resets the BLContextHints
@@ -370,7 +362,14 @@ nothrow @nogc:
 }
 
 /// Rendering context [C API].
-struct BLContextCore;
+struct BLContextCore {
+private:
+    const(void)* vtable;
+    const(void)* state;
+
+public:
+    uint contextType;
+}
 
 version(B2D_Static) {
 nothrow @nogc extern(C):
@@ -618,6 +617,7 @@ nothrow @nogc extern(C):
     BLResult blContextBlitScaledImageI(BLContextCore* self, const(BLRectI)* rect, const(BLImageCore)* img, const(BLRectI)* imgArea);
     BLResult blContextBlitScaledImageD(BLContextCore* self, const(BLRect)* rect, const(BLImageCore)* img, const(BLRectI)* imgArea);
 } else {
+nothrow @nogc extern(C):
     BLResult function(BLContextCore* self) blContextInit;
     BLResult function(BLContextCore* self, BLContextCore* other) blContextInitMove;
     BLResult function(BLContextCore* self, const(BLContextCore)* other) blContextInitWeak;
