@@ -44,6 +44,7 @@ enum BLGlyphPlacementType : uint {
 ///
 /// See `BLGlyphRunPlacement` for placement modes provided by Blend2D.
 struct BLGlyphRun {
+nothrow @nogc:
 
     /// Glyph id data (abstract, incremented by `glyphAdvance`).
     void* glyphData;
@@ -157,7 +158,7 @@ nothrow @nogc:
     /**
         Gets the glyph run as a slice
     */
-    const(GlyphRun)[] getGlyphRun() {
+    const(BLGlyphRun)[] getGlyphRun() {
         return blGlyphBufferGetGlyphRun(&this)[0..size()];
     }
 
@@ -193,7 +194,7 @@ nothrow @nogc:
         Sets the text of the glyph buffer from a D string slice
     */
     BLResult setGlyphs(uint[] glyphs) {
-        return blGlyphBufferSetText(&this, glyphs.ptr, glyphs.length);
+        return blGlyphBufferSetGlyphs(&this, glyphs.ptr, glyphs.length);
     }
 }
 

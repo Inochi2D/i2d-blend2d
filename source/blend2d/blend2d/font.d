@@ -348,6 +348,7 @@ alias BLGlyphId = uint;
 
 /// Contains additional information associated with a glyph used by `BLGlyphBuffer`.
 struct BLGlyphInfo {
+nothrow @nogc:
 
     uint cluster;
     uint reserved;
@@ -360,6 +361,7 @@ struct BLGlyphInfo {
 ///
 /// Provides information about__ glyph offset (x/y) and advance (x/y).
 struct BLGlyphPlacement {
+nothrow @nogc:
 
     BLPointI placement;
     BLPointI advance;
@@ -371,6 +373,7 @@ struct BLGlyphPlacement {
 
 /// Character to glyph mapping state.
 struct BLGlyphMappingState {
+nothrow @nogc:
 
     /// Number of glyphs or glyph-items on out__put.
     size_t glyphCount;
@@ -394,6 +397,7 @@ struct BLGlyphOutlineSinkInfo {
 /// Unicode coverage describes which unicode characters are provided by a font. Blend2D accesses this information by
 /// reading "OS/2" table, if available.
 struct BLFontUnicodeCoverage {
+nothrow @nogc:
     uint[4] data;
 
 
@@ -431,6 +435,7 @@ struct BLFontUnicodeCoverage {
 
 /// Font PANOSE classification.
 struct BLFontPanose {
+nothrow @nogc:
     union {
         ubyte[10] data;
         ubyte familyKind;
@@ -506,6 +511,7 @@ struct BLFontPanose {
 /// 2x2 transformation matrix used by `BLFont`. It's similar to `BLMatrix2D`, however, it doesn't provide a
 /// translation part as it's assumed to be zero.
 struct BLFontMatrix {
+nothrow @nogc:
     union {
         double[4] m;
         struct {
@@ -535,6 +541,7 @@ struct BLFontMatrix {
 
 /// Scaled `BLFontDesignMetrics` based on font size and other properties.
 struct BLFontMetrics {
+nothrow @nogc:
     /// Font size.
     float size;
 
@@ -594,6 +601,7 @@ struct BLFontMetrics {
 /// When a new `BLFont` instance is created a scaled metrics `BLFontMetrics` is automatically calculated from
 /// `BLFontDesignMetrics` including other members like transformation, etc...
 struct BLFontDesignMetrics {
+nothrow @nogc:
     /// Units per EM square.
     int unitsPerEm;
     /// Lowest readable size in pixels.
@@ -664,6 +672,7 @@ struct BLFontDesignMetrics {
 
 /// Text metrics.
 struct BLTextMetrics {
+nothrow @nogc:
     BLPoint advance;
     BLPoint leadingBearing;
     BLPoint trailingBearing;
@@ -748,6 +757,7 @@ enum BLFontOutlineType : uint {
 }
 /// Information of \ref BLFontFace.
 struct BLFontFaceInfo {
+nothrow @nogc:
 
     /// Font face type, see \ref BLFontFaceType.
     ubyte faceType;
@@ -780,6 +790,7 @@ struct BLFontFaceInfo {
 ///
 /// \sa BLFontManager.
 struct BLFontQueryProperties {
+nothrow @nogc:
 
     /// Font style.
     uint style;

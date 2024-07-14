@@ -683,6 +683,7 @@ struct BLObject {
 
 //! D equivalent of BL_CLASS_INHERITS
 mixin template BLExtends(BASE) {
+nothrow @nogc:
     BASE _base;
 }
 
