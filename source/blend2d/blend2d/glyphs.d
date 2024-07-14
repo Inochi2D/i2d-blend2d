@@ -108,11 +108,6 @@ struct BLGlyphRun {
 
 }
 
-struct BLGlyphBuffer {
-    mixin BLExtends!BLObject;
-    BLGlyphBufferData* data;
-}
-
 struct BLGlyphBufferData {
     union {
         struct {
@@ -138,6 +133,68 @@ struct BLGlyphBufferData {
 
     //! Glyph info data - additional information of each code-point or glyph.
     BLGlyphInfo* infoData;
+}
+
+struct BLGlyphBuffer {
+nothrow @nogc:
+    mixin BLExtends!BLObject;
+    BLGlyphBufferData* data;
+
+    /**
+        Gets the size of the glyph buffer
+    */
+    size_t size() {
+        return blGlyphBufferGetSize(&this);
+    }
+
+    /**
+        Gets this glyph buffer's flags
+    */
+    uint getFlags() {
+        return blGlyphBufferGetFlags(&this);
+    }
+
+    /**
+        Gets the glyph run as a slice
+    */
+    const(GlyphRun)[] getGlyphRun() {
+        return blGlyphBufferGetGlyphRun(&this)[0..size()];
+    }
+
+    /**
+        Gets the content as a slice
+    */
+    const(uint)[] getContent() {
+        return blGlyphBufferGetContent(&this)[0..size()];
+    }
+
+    /**
+        Gets the content as a slice
+    */
+    const(BLGlyphInfo)[] getInfoData() {
+        return blGlyphBufferGetInfoData(&this)[0..size()];
+    }
+
+    /**
+        Gets the content as a slice
+    */
+    const(BLGlyphPlacement)[] getPlacementData() {
+        return blGlyphBufferGetPlacementData(&this)[0..size()];
+    }
+
+    /**
+        Sets the text of the glyph buffer from a D string slice
+    */
+    BLResult setText(string text) {
+        return blGlyphBufferSetText(&this, text.ptr, text.length, BLTextEncoding.BL_TEXT_ENCODING_UTF8);
+    }
+
+    /**
+        Sets the text of the glyph buffer from a D string slice
+    */
+    BLResult setGlyphs(uint[] glyphs) {
+        return blGlyphBufferSetText(&this, glyphs.ptr, glyphs.length);
+    }
 }
 
 version(B2D_Static) {
