@@ -40,6 +40,30 @@ enum BLTransformOp : uint {
 
 }
 
+//! Transformation matrix type that can be obtained by calling `BLMatrix2D::type()`.
+//!
+//! ```
+//!  Identity  Transl.  Scale     Swap    Affine
+//!   [1  0]   [1  0]   [.  0]   [0  .]   [.  .]
+//!   [0  1]   [0  1]   [0  .]   [.  0]   [.  .]
+//!   [0  0]   [.  .]   [.  .]   [.  .]   [.  .]
+//! ```
+enum BLTransformType : uint {
+
+    //! Identity matrix.
+    BL_TRANSFORM_TYPE_IDENTITY = 0,
+    //! Has translation part (the rest is like identity).
+    BL_TRANSFORM_TYPE_TRANSLATE = 1,
+    //! Has translation and scaling parts.
+    BL_TRANSFORM_TYPE_SCALE = 2,
+    //! Has translation and scaling parts, however scaling swaps X/Y.
+    BL_TRANSFORM_TYPE_SWAP = 3,
+    //! Generic affine matrix.
+    BL_TRANSFORM_TYPE_AFFINE = 4,
+    //! Invalid/degenerate matrix not useful for transformations.
+    BL_TRANSFORM_TYPE_INVALID = 5,
+}
+
 /// Direction of a geometry used by geometric primitives and paths.
 enum BLGeometryDirection : uint {
 
