@@ -688,6 +688,7 @@ struct BLObject {
 mixin template BLExtends(BASE) {
 nothrow @nogc:
     BASE _base;
+    alias _base this;
 }
 
 version(B2D_Static) {

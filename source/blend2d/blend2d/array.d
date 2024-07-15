@@ -14,17 +14,48 @@ import blend2d.blend2d.api;
 struct BLArray {
     mixin BLExtends!BLObject;
 
+private:
     /// Pointer to array data.
-    void* data;
+    void* _data;
     /// Array size [in items].
-    size_t size;
+    size_t _size;
     /// Array capacity [in items].
-    size_t capacity;
+    size_t _capacity;
+
+public:
+    
+    /**
+        Gets the size of the array
+    */
+    size_t size() {
+        return blArrayGetSize(&this);
+    }
+
+    /**
+        Gets the capacity of the array
+    */
+    size_t capacity() {
+        return blArrayGetCapacity(&this);
+    }
+
+    /**
+        Gets the size of elements in bytes
+    */
+    size_t itemSize() {
+        return blArrayGetItemSize(&this);
+    }
 }
 
 /// BitArray container [C API].
 struct BLBitArray {
     mixin BLExtends!BLObject;
+
+    /**
+        Gets whether the array is empty
+    */
+    bool isEmpty() {
+        return blBitArrayIsEmpty(&this);
+    }
 }
 
 version(B2D_Static) {
