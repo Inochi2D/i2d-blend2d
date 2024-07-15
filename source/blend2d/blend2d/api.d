@@ -440,6 +440,14 @@ alias BLUnknown = void;
 /// Byte string [C API].
 struct BLString {
     mixin BLExtends!BLObject;
+
+    /**
+        Returns a slice of the data in the BLString
+    */
+    string toSlice() {
+        size_t sz = blStringGetSize(&this);
+        return blStringGetData(&this)[0..sz];
+    }
 }
 
 /// Variant [C API].
