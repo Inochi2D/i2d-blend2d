@@ -433,7 +433,7 @@ public:
     /**
         Saves the state of the context to a context cookie
     */
-    BLContextCookie* save() {
+    BLContextCookie saveToCookie() {
         BLContextCookie cookie;
         blContextSave(&this, &cookie);
         return cookie;
