@@ -368,9 +368,83 @@ struct BLContext {
 private:
     const(void)* vtable;
     const(void)* state;
+    uint contextType;
 
 public:
-    uint contextType;
+
+    /**
+        Resets the context
+    */
+    void reset() {
+        blContextReset(&this);
+    }
+
+    /**
+        Gets the type of this context
+    */
+    BLContextType getType() {
+        return blContextGetType(&this);
+    }
+
+    /**
+        Gets the size of the target image
+    */
+    BLSize getTargetSize() {
+        BLSize size;
+        blContextGetTargetSize(&this, &size);
+        return size;
+    }
+
+    /**
+        Gets the target image
+    */
+    BLImage* getTargetImage() {
+        return blContextGetTargetImage(&this);
+    }
+
+    /**
+        Takes ownership over the target image for rendering
+    */
+    BLResult begin(BLImage* image, const(BLContextCreateInfo)* cci = null) {
+        return blContextBegin(&this, image, cci);
+    }
+
+    /**
+        Ends rendering to the current target texture and reverts to default state.
+    */
+    BLResult end() {
+        return blContextEnd(&this);
+    }
+
+    /**
+        Flushes rendering operations.
+    */
+    BLResult flush(BLContextFlushFlags flags = BLContextFlushFlags.BL_CONTEXT_FLUSH_SYNC) {
+        return blContextFlush(&this, flags);
+    }
+
+    /**
+        Saves the state of the context
+    */
+    BLResult save() {
+        return blContextSave(&this, null);
+    }
+
+    /**
+        Saves the state of the context to a context cookie
+    */
+    BLContextCookie* save() {
+        BLContextCookie cookie;
+        blContextSave(&this, &cookie);
+        return cookie;
+    }
+
+    /**
+        Restores the state of the context
+    */
+    BLResult restore(const(BLContextCookie)* cookie = null) {
+        return blContextRestore(&this, cookie);
+    }
 }
 
 version(B2D_Static) {
@@ -378,7 +452,7 @@ nothrow @nogc extern(C):
     BLResult blContextInit(BLContext* self);
     BLResult blContextInitMove(BLContext* self, BLContext* other);
     BLResult blContextInitWeak(BLContext* self, const(BLContext)* other);
-    BLResult blContextInitAs(BLContext* self, BLImage* image, const BLContextCreateInfo* cci);
+    BLResult blContextInitAs(BLContext* self, BLImage* image, const(BLContextCreateInfo)* cci);
     BLResult blContextDestroy(BLContext* self);
 
     BLResult blContextReset(BLContext* self);
@@ -390,13 +464,13 @@ nothrow @nogc extern(C):
     BLResult blContextGetTargetSize(const(BLContext)* self, BLSize* targetSizeOut);
     BLImage* blContextGetTargetImage(const(BLContext)* self);
 
-    BLResult blContextBegin(BLContext* self, BLImage* image, const BLContextCreateInfo* cci);
+    BLResult blContextBegin(BLContext* self, BLImage* image, const(BLContextCreateInfo)* cci);
     BLResult blContextEnd(BLContext* self);
 
     BLResult blContextFlush(BLContext* self, BLContextFlushFlags flags);
 
     BLResult blContextSave(BLContext* self, BLContextCookie* cookie);
-    BLResult blContextRestore(BLContext* self, const BLContextCookie* cookie);
+    BLResult blContextRestore(BLContext* self, const(BLContextCookie)* cookie);
 
     BLResult blContextGetMetaTransform(const(BLContext)* self, BLMatrix2D* transformOut);
     BLResult blContextGetUserTransform(const(BLContext)* self, BLMatrix2D* transformOut);
@@ -623,7 +697,7 @@ nothrow @nogc extern(C):
     BLResult function(BLContext* self) blContextInit;
     BLResult function(BLContext* self, BLContext* other) blContextInitMove;
     BLResult function(BLContext* self, const(BLContext)* other) blContextInitWeak;
-    BLResult function(BLContext* self, BLImage* image, const BLContextCreateInfo* cci) blContextInitAs;
+    BLResult function(BLContext* self, BLImage* image, const(BLContextCreateInfo)* cci) blContextInitAs;
     BLResult function(BLContext* self) blContextDestroy;
     BLResult function(BLContext* self) blContextReset;
     BLResult function(BLContext* self, BLContext* other) blContextAssignMove;
@@ -631,11 +705,11 @@ nothrow @nogc extern(C):
     BLContextType function(const(BLContext)* self) pure blContextGetType;
     BLResult function(const(BLContext)* self, BLSize* targetSizeOut) blContextGetTargetSize;
     BLImage*function(const(BLContext)* self)  blContextGetTargetImage;
-    BLResult function(BLContext* self, BLImage* image, const BLContextCreateInfo* cci) blContextBegin;
+    BLResult function(BLContext* self, BLImage* image, const(BLContextCreateInfo)* cci) blContextBegin;
     BLResult function(BLContext* self) blContextEnd;
     BLResult function(BLContext* self, BLContextFlushFlags flags) blContextFlush;
     BLResult function(BLContext* self, BLContextCookie* cookie) blContextSave;
-    BLResult function(BLContext* self, const BLContextCookie* cookie) blContextRestore;
+    BLResult function(BLContext* self, const(BLContextCookie)* cookie) blContextRestore;
     BLResult function(const(BLContext)* self, BLMatrix2D* transformOut) blContextGetMetaTransform;
     BLResult function(const(BLContext)* self, BLMatrix2D* transformOut) blContextGetUserTransform;
     BLResult function(const(BLContext)* self, BLMatrix2D* transformOut) blContextGetFinalTransform;
