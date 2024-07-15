@@ -871,7 +871,7 @@ struct BLFont {
         Sets the feature settings for this font.
     */
     void setFeatureSettings(const(BLFontFeatureSettings)* settings) {
-        blFontSetFeatureSettings(&this, &settings);
+        blFontSetFeatureSettings(&this, settings);
     }
 
     /**
@@ -894,7 +894,7 @@ struct BLFont {
         Sets the variation settings for this font.
     */
     void setVariationSettings(const(BLFontVariationSettings)* settings) {
-        blFontSetVariationSettings(&this, &settings);
+        blFontSetVariationSettings(&this, settings);
     }
 
     /**
@@ -924,14 +924,14 @@ struct BLFont {
         Positions the glyphs
     */
     void positionGlyphs(BLGlyphBuffer* buffer) {
-        blFontPositionGlyphs(buffer);
+        blFontPositionGlyphs(&this, buffer);
     }
 
     /**
         Shapes the font text
     */
     void applyKerning(BLGlyphBuffer* buffer) {
-        blFontApplyKerning(buffer);
+        blFontApplyKerning(&this, buffer);
     }
 
     /**

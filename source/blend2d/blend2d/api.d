@@ -446,7 +446,7 @@ struct BLString {
     */
     string toSlice() {
         size_t sz = blStringGetSize(&this);
-        return blStringGetData(&this)[0..sz];
+        return cast(string)blStringGetData(&this)[0..sz];
     }
 }
 

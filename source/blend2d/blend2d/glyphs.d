@@ -193,6 +193,20 @@ nothrow @nogc:
     /**
         Sets the text of the glyph buffer from a D string slice
     */
+    BLResult setText(wstring text) {
+        return blGlyphBufferSetText(&this, text.ptr, text.length, BLTextEncoding.BL_TEXT_ENCODING_UTF16);
+    }
+
+    /**
+        Sets the text of the glyph buffer from a D string slice
+    */
+    BLResult setText(dstring text) {
+        return blGlyphBufferSetText(&this, text.ptr, text.length, BLTextEncoding.BL_TEXT_ENCODING_UTF32);
+    }
+
+    /**
+        Sets the text of the glyph buffer from a D string slice
+    */
     BLResult setGlyphs(uint[] glyphs) {
         return blGlyphBufferSetGlyphs(&this, glyphs.ptr, glyphs.length);
     }
