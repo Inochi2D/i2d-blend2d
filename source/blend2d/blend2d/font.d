@@ -1029,6 +1029,16 @@ struct BLFontFace {
     }
 }
 
+/// A read only data that represents a font table or its sub-table.
+struct BLFontTable {
+
+    /// Pointer to the beginning of the data interpreted as `uint8_t*`.
+    const(ubyte)* data;
+
+    /// Size of `data` in bytes.
+    size_t size;
+}
+
 /// Font Data [C API].
 struct BLFontData {
     mixin BLExtends!BLObject;
