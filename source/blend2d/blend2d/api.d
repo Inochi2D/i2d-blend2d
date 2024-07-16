@@ -670,7 +670,7 @@ nothrow @nogc:
     void reset() nothrow { this = typeof(this).init; }
 }
 
-//! Defines a BLObject layout that all objects must use.
+/// Defines a BLObject layout that all objects must use.
 union BLObjectDetail {
     void* impl;
     char[16] char_data;
@@ -687,12 +687,12 @@ union BLObjectDetail {
     }
 }
 
-//! Base class used by all Blend2D objects.
+/// Base class used by all Blend2D objects.
 struct BLObject {
     BLObjectDetail _d;
 }
 
-//! D equivalent of BL_CLASS_INHERITS
+/// D equivalent of BL_CLASS_INHERITS
 mixin template BLExtends(BASE) {
 nothrow @nogc:
     BASE _base;

@@ -3,68 +3,68 @@ import blend2d.blend2d.api;
 import blend2d.blend2d.image;
 import blend2d.blend2d.geometry;
 
-//! Pattern quality.
+/// Pattern quality.
 enum BLPatternQuality : uint {
     
-  //! Nearest neighbor interpolation.
+  /// Nearest neighbor interpolation.
   BL_PATTERN_QUALITY_NEAREST = 0,
-  //! Bilinear interpolation.
+  /// Bilinear interpolation.
   BL_PATTERN_QUALITY_BILINEAR = 1,
 }
 
-//! Gradient type.
+/// Gradient type.
 enum BLGradientType : uint {
 
-  //! Linear gradient type.
+  /// Linear gradient type.
   BL_GRADIENT_TYPE_LINEAR = 0,
-  //! Radial gradient type.
+  /// Radial gradient type.
   BL_GRADIENT_TYPE_RADIAL = 1,
-  //! Conic gradient type.
+  /// Conic gradient type.
   BL_GRADIENT_TYPE_CONIC = 2,
 }
 
-//! Gradient data index.
+/// Gradient data index.
 enum BLGradientValue : uint {
     
-    //! x0 - start 'x' for a Linear gradient and `x` center for both Radial and Conic gradients.
+    /// x0 - start 'x' for a Linear gradient and `x` center for both Radial and Conic gradients.
     BL_GRADIENT_VALUE_COMMON_X0 = 0,
-    //! y0 - start 'y' for a Linear gradient and `y` center for both Radial and Conic gradients.
+    /// y0 - start 'y' for a Linear gradient and `y` center for both Radial and Conic gradients.
     BL_GRADIENT_VALUE_COMMON_Y0 = 1,
-    //! x1 - end 'x' for a Linear gradient and focal point `x` for a Radial gradient.
+    /// x1 - end 'x' for a Linear gradient and focal point `x` for a Radial gradient.
     BL_GRADIENT_VALUE_COMMON_X1 = 2,
-    //! y1 - end 'y' for a Linear/gradient and focal point `y` for a Radial gradient.
+    /// y1 - end 'y' for a Linear/gradient and focal point `y` for a Radial gradient.
     BL_GRADIENT_VALUE_COMMON_Y1 = 3,
-    //! Radial gradient center radius.
+    /// Radial gradient center radius.
     BL_GRADIENT_VALUE_RADIAL_R0 = 4,
-    //! Radial gradient focal radius.
+    /// Radial gradient focal radius.
     BL_GRADIENT_VALUE_RADIAL_R1 = 5,
-    //! Conic gradient angle.
+    /// Conic gradient angle.
     BL_GRADIENT_VALUE_CONIC_ANGLE = 2,
-    //! Conic gradient angle.
+    /// Conic gradient angle.
     BL_GRADIENT_VALUE_CONIC_REPEAT = 3,
 }
 
-//! Gradient rendering quality.
+/// Gradient rendering quality.
 enum BLGradientQuality : uint {
     
-    //! Nearest neighbor.
+    /// Nearest neighbor.
     BL_GRADIENT_QUALITY_NEAREST = 0,
 
-    //! Use smoothing, if available (currently never available).
+    /// Use smoothing, if available (currently never available).
     BL_GRADIENT_QUALITY_SMOOTH = 1,
 
-    //! The renderer will use an implementation-specific dithering algorithm to prevent banding.
+    /// The renderer will use an implementation-specific dithering algorithm to prevent banding.
     BL_GRADIENT_QUALITY_DITHER = 2,
 }
 
-//! Defines an `offset` and `rgba` color that us used by `BLGradient` to define
-//! a linear transition between colors.
+/// Defines an `offset` and `rgba` color that us used by `BLGradient` to define
+/// a linear transition between colors.
 struct BLGradientStop {
     double offset;
     BLRgba64 rgba;
 }
 
-//! Linear gradient values packed into a structure.
+/// Linear gradient values packed into a structure.
 struct BLLinearGradientValues {
     double x0;
     double y0;
@@ -72,7 +72,7 @@ struct BLLinearGradientValues {
     double y1;
 }
 
-//! Radial gradient values packed into a structure.
+/// Radial gradient values packed into a structure.
 struct BLRadialGradientValues {
     double x0;
     double y0;
@@ -83,7 +83,7 @@ struct BLRadialGradientValues {
 }
 
 
-//! Conic gradient values packed into a structure.
+/// Conic gradient values packed into a structure.
 struct BLConicGradientValues {
     double x0;
     double y0;
@@ -94,13 +94,13 @@ struct BLConicGradientValues {
 struct BLPattern {
     mixin BLExtends!BLObject;
 
-    //! Image used by the pattern.
+    /// Image used by the pattern.
     BLImage image;
 
-    //! Image area to use.
+    /// Image area to use.
     BLRectI area;
 
-    //! Pattern transformation matrix.
+    /// Pattern transformation matrix.
     BLMatrix2D transform;
 }
 

@@ -168,19 +168,19 @@ nothrow @nogc:
 struct BLImage {
     mixin BLExtends!BLObject;
 
-    //! Pixel data.
+    /// Pixel data.
     void* pixelData;
-    //! Image stride.
+    /// Image stride.
     ptrdiff_t stride;
-    //! Image size.
+    /// Image size.
     BLSizeI size;
-    //! Image format.
+    /// Image format.
     ubyte format;
-    //! Image flags.
+    /// Image flags.
     ubyte flags;
-    //! Image depth (in bits).
+    /// Image depth (in bits).
     ushort depth;
-    //! Reserved for future use, must be zero.
+    /// Reserved for future use, must be zero.
     ubyte[4] reserved;
 }
 

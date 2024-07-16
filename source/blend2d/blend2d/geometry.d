@@ -40,27 +40,27 @@ enum BLTransformOp : uint {
 
 }
 
-//! Transformation matrix type that can be obtained by calling `BLMatrix2D::type()`.
-//!
-//! ```
-//!  Identity  Transl.  Scale     Swap    Affine
-//!   [1  0]   [1  0]   [.  0]   [0  .]   [.  .]
-//!   [0  1]   [0  1]   [0  .]   [.  0]   [.  .]
-//!   [0  0]   [.  .]   [.  .]   [.  .]   [.  .]
-//! ```
+/// Transformation matrix type that can be obtained by calling `BLMatrix2D::type()`.
+///
+/// ```
+///  Identity  Transl.  Scale     Swap    Affine
+///   [1  0]   [1  0]   [.  0]   [0  .]   [.  .]
+///   [0  1]   [0  1]   [0  .]   [.  0]   [.  .]
+///   [0  0]   [.  .]   [.  .]   [.  .]   [.  .]
+/// ```
 enum BLTransformType : uint {
 
-    //! Identity matrix.
+    /// Identity matrix.
     BL_TRANSFORM_TYPE_IDENTITY = 0,
-    //! Has translation part (the rest is like identity).
+    /// Has translation part (the rest is like identity).
     BL_TRANSFORM_TYPE_TRANSLATE = 1,
-    //! Has translation and scaling parts.
+    /// Has translation and scaling parts.
     BL_TRANSFORM_TYPE_SCALE = 2,
-    //! Has translation and scaling parts, however scaling swaps X/Y.
+    /// Has translation and scaling parts, however scaling swaps X/Y.
     BL_TRANSFORM_TYPE_SWAP = 3,
-    //! Generic affine matrix.
+    /// Generic affine matrix.
     BL_TRANSFORM_TYPE_AFFINE = 4,
-    //! Invalid/degenerate matrix not useful for transformations.
+    /// Invalid/degenerate matrix not useful for transformations.
     BL_TRANSFORM_TYPE_INVALID = 5,
 }
 
@@ -407,26 +407,26 @@ alias BLPathStrokeSinkFunc = extern(C) BLResult function(BLPath* a, BLPath* b, B
 struct BLPath {
     mixin BLExtends!BLObject;
     
-    //! Union of either raw path-data or their `view`.
+    /// Union of either raw path-data or their `view`.
     union {
         struct {
 
-            //! Command data
+            /// Command data
             ubyte* commandData;
-            //! Vertex data.
+            /// Vertex data.
             BLPoint* vertexData;
-            //! Vertex/command count.
+            /// Vertex/command count.
             size_t size;
         }
 
-        //! Path data as view.
+        /// Path data as view.
         BLPathView view;
     }
 
-    //! Path vertex/command capacity.
+    /// Path vertex/command capacity.
     size_t capacity;
 
-    //! Path flags related to caching.
+    /// Path flags related to caching.
     uint flags;
 }
 
