@@ -41,7 +41,7 @@ nothrow @nogc:
                     "libblend2d.dylib"
                 ];
         } else version (Posix) {
-            const(char)[][2] libNames =
+            const(char)[][3] libNames =
                 [
                     "libblend2d.so",
                     "/usr/local/lib/libblend2d.so",
